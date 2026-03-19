@@ -83,7 +83,6 @@ professional water leak detection company in Egypt.
 - **IIS Express** for local hosting
 
 ## 📁 Project Structure
-## 📁 Project Structure
 
 ├── Professonal.DAL
 │   ├── Models
@@ -115,10 +114,7 @@ Feature	Implementation
 📸 Screenshots
 Home Page
 <p align="center"> <img src="https://github.com/user-attachments/assets/3d922ace-80f2-4f00-a79d-d39775eb2130" alt="Home Page" width="800"> <br> <em>الصفحة الرئيسية - Hero section with services</em> </p>
-Admin Dashboard
-<p align="center"> <img src="https://via.placeholder.com/800x400/0091CA/ffffff?text=Admin+Dashboard+Screenshot" alt="Admin Dashboard" width="800"> <br> <em>لوحة تحكم المدير - إدارة الطلبات</em> </p>
-Request Tracking
-<p align="center"> <img src="https://via.placeholder.com/800x400/00BCD4/ffffff?text=Request+Tracking+Screenshot" alt="Request Tracking" width="800"> <br> <em>تتبع حالة الطلب - بحث برقم الهاتف</em> </p>
+
 👨‍💻 Author
 Ezzat Karem
 
