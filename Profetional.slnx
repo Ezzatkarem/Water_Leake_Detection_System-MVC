@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Professional.pl/Professonal.pl.csproj" />
+  <Project Path="Professonal.DAL/Professonal.DAL.csproj" />
+  <Project Path="Profissonal.PPL/Profissonal.PPL.csproj" />
+</Solution>

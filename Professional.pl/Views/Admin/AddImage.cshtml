@@ -1,0 +1,118 @@
+@model Profissonal.PPL.ModelVM.MediaItemVM
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "إضافة صورة جديدة";
+}
+
+<div class="animate__animated animate__fadeIn">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header with Back Button -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <a asp-action="Images" class="btn btn-outline-primary rounded-pill px-4">
+                    <i class="fa-solid fa-arrow-right me-2"></i> عودة للمعرض
+                </a>
+                <h4 class="fw-bold mb-0">رفع صورة جديدة</h4>
+            </div>
+
+            <div class="glass-card bg-white p-5 shadow-sm border-0">
+                <div class="text-center mb-5">
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fa-solid fa-cloud-arrow-up display-6"></i>
+                    </div>
+                    <p class="text-muted mt-2">اختر صوراً عالية الجودة تظهر دقة العمل واحترافية الفريق</p>
+                </div>
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger border-0 rounded-4 p-4 mb-4 shadow-sm d-flex align-items-start gap-3">
+                        <i class="fa-solid fa-circle-xmark fs-4 mt-1"></i>
+                        <div class="flex-grow-1">
+                            @Html.ValidationSummary(true, "", new { @class = "small mb-0 list-unstyled" })
+                        </div>
+                    </div>
+                }
+
+                <form asp-action="AddImage" asp-controller="Admin" method="post" enctype="multipart/form-data" class="premium-form">
+                    @Html.AntiForgeryToken()
+
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input asp-for="Title" class="form-control" placeholder="عنوان الصورة" required />
+                                <label asp-for="Title">عنوان أو وصف مختصر للصورة</label>
+                                <span asp-validation-for="Title" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label fw-bold mb-3">اختر ملف الصورة</label>
+                            <div class="upload-drop-zone" onclick="document.getElementById('ImageFile').click()">
+                                <div id="upload-placeholder">
+                                    <i class="fa-solid fa-image-portrait fa-4x text-primary opacity-25 mb-3"></i>
+                                    <h5>اسحب الصورة هنا أو اضغط للاختيار</h5>
+                                    <p class="text-muted small">يفضل استخدام صور بصيغة JPG أو PNG لا تتجاوز 5 ميجا</p>
+                                </div>
+                                <div id="preview-wrapper" style="display: none;">
+                                    <img id="img-preview" src="#" class="img-fluid rounded-3 shadow-sm mb-3" style="max-height: 300px;">
+                                    <p class="text-primary fw-bold mb-0">تم اختيار الصورة بنجاح</p>
+                                    <button type="button" class="btn btn-sm btn-outline-danger mt-3 rounded-pill" onclick="resetUpload(event)">
+                                        <i class="fa-solid fa-trash me-1"></i> تغيير الصورة
+                                    </button>
+                                </div>
+                            </div>
+                            <input asp-for="ImageFile" type="file" class="d-none" id="ImageFile" accept="image/*" onchange="previewImage(this)" required />
+                            <span asp-validation-for="ImageFile" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-12 mt-5">
+                            <button type="submit" class="btn btn-primary w-100 rounded-pill py-3 fw-bold fs-5 shadow-sm">
+                                <i class="fa-solid fa-upload me-2"></i> رفع الصورة ونشرها في المعرض
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .upload-drop-zone {
+        border: 2px dashed #e2e8f0;
+        border-radius: 20px;
+        padding: 60px 40px;
+        text-align: center;
+        background: #f8fafc;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .upload-drop-zone:hover {
+        border-color: var(--primary);
+        background: rgba(0, 119, 182, 0.05);
+    }
+</style>
+
+@section Scripts {
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('img-preview').src = e.target.result;
+                    document.getElementById('upload-placeholder').style.display = 'none';
+                    document.getElementById('preview-wrapper').style.display = 'block';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function resetUpload(e) {
+            e.stopPropagation();
+            document.getElementById('ImageFile').value = '';
+            document.getElementById('upload-placeholder').style.display = 'block';
+            document.getElementById('preview-wrapper').style.display = 'none';
+        }
+    </script>
+}

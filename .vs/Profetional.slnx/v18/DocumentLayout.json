@@ -1,0 +1,158 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\My Projects\\.net\\Professional\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{F0D58559-7BA7-73D5-EC8C-126BE6F0A754}|Professional.pl\\Professonal.pl.csproj|d:\\my projects\\.net\\professional\\professional.pl\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F0D58559-7BA7-73D5-EC8C-126BE6F0A754}|Professional.pl\\Professonal.pl.csproj|solutionrelative:professional.pl\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{228BFD41-011C-110F-C295-DE1102991879}|Profissonal.PPL\\Profissonal.PPL.csproj|d:\\my projects\\.net\\professional\\profissonal.ppl\\service\\implement\\accountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{228BFD41-011C-110F-C295-DE1102991879}|Profissonal.PPL\\Profissonal.PPL.csproj|solutionrelative:profissonal.ppl\\service\\implement\\accountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0D58559-7BA7-73D5-EC8C-126BE6F0A754}|Professional.pl\\Professonal.pl.csproj|d:\\my projects\\.net\\professional\\professional.pl\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0D58559-7BA7-73D5-EC8C-126BE6F0A754}|Professional.pl\\Professonal.pl.csproj|solutionrelative:professional.pl\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0D58559-7BA7-73D5-EC8C-126BE6F0A754}|Professional.pl\\Professonal.pl.csproj|d:\\my projects\\.net\\professional\\professional.pl\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{F0D58559-7BA7-73D5-EC8C-126BE6F0A754}|Professional.pl\\Professonal.pl.csproj|solutionrelative:professional.pl\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0D58559-7BA7-73D5-EC8C-126BE6F0A754}|Professional.pl\\Professonal.pl.csproj|d:\\my projects\\.net\\professional\\professional.pl\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F0D58559-7BA7-73D5-EC8C-126BE6F0A754}|Professional.pl\\Professonal.pl.csproj|solutionrelative:professional.pl\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0D58559-7BA7-73D5-EC8C-126BE6F0A754}|Professional.pl\\Professonal.pl.csproj|d:\\my projects\\.net\\professional\\professional.pl\\views\\home\\getleakbyid.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F0D58559-7BA7-73D5-EC8C-126BE6F0A754}|Professional.pl\\Professonal.pl.csproj|solutionrelative:professional.pl\\views\\home\\getleakbyid.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0D58559-7BA7-73D5-EC8C-126BE6F0A754}|Professional.pl\\Professonal.pl.csproj|d:\\my projects\\.net\\professional\\professional.pl\\views\\home\\confirmation.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F0D58559-7BA7-73D5-EC8C-126BE6F0A754}|Professional.pl\\Professonal.pl.csproj|solutionrelative:professional.pl\\views\\home\\confirmation.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0D58559-7BA7-73D5-EC8C-126BE6F0A754}|Professional.pl\\Professonal.pl.csproj|d:\\my projects\\.net\\professional\\professional.pl\\views\\admin\\vedios.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F0D58559-7BA7-73D5-EC8C-126BE6F0A754}|Professional.pl\\Professonal.pl.csproj|solutionrelative:professional.pl\\views\\admin\\vedios.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AccountService.cs",
+              "DocumentMoniker": "D:\\My Projects\\.net\\Professional\\Profissonal.PPL\\Service\\Implement\\AccountService.cs",
+              "RelativeDocumentMoniker": "Profissonal.PPL\\Service\\Implement\\AccountService.cs",
+              "ToolTip": "D:\\My Projects\\.net\\Professional\\Profissonal.PPL\\Service\\Implement\\AccountService.cs",
+              "RelativeToolTip": "Profissonal.PPL\\Service\\Implement\\AccountService.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAswCkAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-19T12:31:38.296Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "D:\\My Projects\\.net\\Professional\\Professional.pl\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "Professional.pl\\Controllers\\AccountController.cs",
+              "ToolTip": "D:\\My Projects\\.net\\Professional\\Professional.pl\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "Professional.pl\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAkwFMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-19T12:31:11.014Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "_AdminLayout.cshtml",
+              "DocumentMoniker": "D:\\My Projects\\.net\\Professional\\Professional.pl\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeDocumentMoniker": "Professional.pl\\Views\\Shared\\_AdminLayout.cshtml",
+              "ToolTip": "D:\\My Projects\\.net\\Professional\\Professional.pl\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeToolTip": "Professional.pl\\Views\\Shared\\_AdminLayout.cshtml",
+              "ViewState": "AgIAABgBAACAZWZmZuYYwCkBAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-19T12:20:16.757Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "D:\\My Projects\\.net\\Professional\\Professional.pl\\Views\\Account\\Login.cshtml",
+              "RelativeDocumentMoniker": "Professional.pl\\Views\\Account\\Login.cshtml",
+              "ToolTip": "D:\\My Projects\\.net\\Professional\\Professional.pl\\Views\\Account\\Login.cshtml",
+              "RelativeToolTip": "Professional.pl\\Views\\Account\\Login.cshtml",
+              "ViewState": "AgIAACoCAADAzMzMzAwgwD0CAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-18T16:44:21.807Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "GetLeakById.cshtml",
+              "DocumentMoniker": "D:\\My Projects\\.net\\Professional\\Professional.pl\\Views\\Home\\GetLeakById.cshtml",
+              "RelativeDocumentMoniker": "Professional.pl\\Views\\Home\\GetLeakById.cshtml",
+              "ToolTip": "D:\\My Projects\\.net\\Professional\\Professional.pl\\Views\\Home\\GetLeakById.cshtml",
+              "RelativeToolTip": "Professional.pl\\Views\\Home\\GetLeakById.cshtml",
+              "ViewState": "AgIAAO0CAAAAAAAAAAAqwP0CAABmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-19T09:57:49.752Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Confirmation.cshtml",
+              "DocumentMoniker": "D:\\My Projects\\.net\\Professional\\Professional.pl\\Views\\Home\\Confirmation.cshtml",
+              "RelativeDocumentMoniker": "Professional.pl\\Views\\Home\\Confirmation.cshtml",
+              "ToolTip": "D:\\My Projects\\.net\\Professional\\Professional.pl\\Views\\Home\\Confirmation.cshtml",
+              "RelativeToolTip": "Professional.pl\\Views\\Home\\Confirmation.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-18T14:41:53.331Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "site.css",
+              "DocumentMoniker": "D:\\My Projects\\.net\\Professional\\Professional.pl\\wwwroot\\css\\site.css",
+              "RelativeDocumentMoniker": "Professional.pl\\wwwroot\\css\\site.css",
+              "ToolTip": "D:\\My Projects\\.net\\Professional\\Professional.pl\\wwwroot\\css\\site.css",
+              "RelativeToolTip": "Professional.pl\\wwwroot\\css\\site.css",
+              "ViewState": "AgIAAMAIAAAAAAAAAAAAALQIAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-03-18T16:00:11.359Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Vedios.cshtml",
+              "DocumentMoniker": "D:\\My Projects\\.net\\Professional\\Professional.pl\\Views\\Admin\\Vedios.cshtml",
+              "RelativeDocumentMoniker": "Professional.pl\\Views\\Admin\\Vedios.cshtml",
+              "ToolTip": "D:\\My Projects\\.net\\Professional\\Professional.pl\\Views\\Admin\\Vedios.cshtml",
+              "RelativeToolTip": "Professional.pl\\Views\\Admin\\Vedios.cshtml",
+              "ViewState": "AgIAAFsAAAAAAAAAAACGPXQAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-18T14:33:03.762Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

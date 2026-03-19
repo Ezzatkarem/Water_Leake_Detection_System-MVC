@@ -1,0 +1,337 @@
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    var culture = Context.Request.Cookies["Language"] ?? "ar";
+    var isRTL = culture == "ar";
+}
+
+<!DOCTYPE html>
+<html lang="@culture" dir="@(isRTL ? "rtl" : "ltr")">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - شركة كشف التسريبات</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5.3 -->
+    @if (isRTL)
+    {
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css">
+    }
+    else
+    {
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    }
+    
+    <!-- Icons & Animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="bg-light">
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress-container">
+        <div class="scroll-progress-bar"></div>
+    </div>
+
+    <!-- Animated Background Container (Home Page Only) -->
+    @if (Context.Request.Path == "/")
+    {
+        <div class="animated-bg"></div>
+    }
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-custom fixed-top nav-transparent">
+            <div class="container d-flex align-items-center justify-content-between">
+                <!-- ══════════════════════════════════════
+                   الصق الكود ده مكان .pro-logo في _Layout.cshtml
+                ══════════════════════════════════════ -->
+
+                <a class="pro-logo" asp-area="" asp-controller="Home" asp-action="Index" dir="ltr">
+
+                    <!-- ROW 1: PR + Droplet -->
+                    <div class="logo-row-1">
+                        <span class="logo-pr">PR</span>
+                        <span class="logo-droplet-svg">
+                            <svg viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="dropGrad" x1="30%" y1="10%" x2="70%" y2="90%">
+                                        <stop offset="0%" stop-color="#29a8e0" />
+                                        <stop offset="100%" stop-color="#1565c0" />
+                                    </linearGradient>
+                                </defs>
+                                <!-- Droplet shape -->
+                                <path d="M30,4 C30,4 6,36 6,52 C6,66 17,76 30,76 C43,76 54,66 54,52 C54,36 30,4 30,4 Z"
+                                      fill="url(#dropGrad)" />
+                                <!-- White highlight -->
+                                <ellipse cx="21" cy="38" rx="6" ry="9" fill="rgba(255,255,255,0.45)" transform="rotate(-20 21 38)" />
+                            </svg>
+                        </span>
+                    </div>
+
+                    <!-- ROW 2: professionals -->
+                    <div class="logo-row-2">
+                        <span class="logo-professionals">professionals</span>
+                    </div>
+
+                    <!-- ROW 3: Arabic -->
+                    <div class="logo-row-3">
+                        <span class="logo-arabic">محترفون كشف تسريبات المياه</span>
+                    </div>
+
+                    <!-- ROW 4: Wave lines -->
+                    <div class="logo-row-4">
+                        <svg class="logo-waves-svg" viewBox="0 0 230 22" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0,8 C35,2 75,16 115,8 C155,2 195,16 230,8"
+                                  fill="none" stroke="#29a8e0" stroke-width="2.5" stroke-linecap="round" />
+                            <path d="M0,16 C35,10 75,22 115,16 C155,10 195,22 230,16"
+                                  fill="none" stroke="#1565c0" stroke-width="2" stroke-linecap="round" opacity="0.7" />
+                        </svg>
+                    </div>
+
+                </a>
+
+                <div class="d-flex align-items-center gap-2 gap-md-4 ms-auto">
+                    <!-- Desktop Nav -->
+                    <div class="collapse navbar-collapse d-none d-lg-block">
+                        <ul class="navbar-nav ms-auto custom-nav-links">
+                            <li class="nav-item">
+                                <a class="nav-link @(Context.Request.Path == "/" ? "active" : "")" asp-controller="Home" asp-action="Index">الرئيسية</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#services">خدماتنا</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#contact">اتصل بنا</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Admin" asp-action="Index">الإدارة</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                  
+                 
+                    
+                    <button class="navbar-toggler border-0 shadow-none p-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Mobile Offcanvas Top Slide -->
+        <!-- استبدل الـ offcanvas كامل في _Layout.cshtml بالكود ده -->
+
+        <div class="offcanvas offcanvas-top  custom-offcanvas" tabindex="-1" id="offcanvasNavbar">
+
+            <!-- Header -->
+            <div class="offcanvas-header">
+                <div class="d-flex align-items-center gap-2" dir="ltr">
+                    <span style="font-size:1.6rem; font-weight:900; color:#0091CA; letter-spacing:-2px;">PR</span>
+                    <svg viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:36px;">
+                        <defs>
+                            <linearGradient id="dg2" x1="30%" y1="10%" x2="70%" y2="90%">
+                                <stop offset="0%" stop-color="#29a8e0" />
+                                <stop offset="100%" stop-color="#1565c0" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M30,4 C30,4 6,36 6,52 C6,66 17,76 30,76 C43,76 54,66 54,52 C54,36 30,4 30,4 Z" fill="url(#dg2)" />
+                        <ellipse cx="21" cy="38" rx="6" ry="9" fill="rgba(255,255,255,0.45)" transform="rotate(-20 21 38)" />
+                    </svg>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="offcanvas-body">
+
+                <!-- Nav Links -->
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link @(Context.Request.Path == "/" ? "active" : "")"
+                           asp-controller="Home" asp-action="Index"
+                           data-bs-dismiss="offcanvas">
+                            الرئيسية
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services" data-bs-dismiss="offcanvas">خدماتنا</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#gallery" data-bs-dismiss="offcanvas">معرض الأعمال</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact" data-bs-dismiss="offcanvas">اتصل بنا</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Admin" asp-action="Index"
+                           data-bs-dismiss="offcanvas">
+                            الإدارة
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Social Icons -->
+                <div class="offcanvas-social">
+                    <a href="#" class="offcanvas-soc-icon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="offcanvas-soc-icon"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="offcanvas-soc-icon"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#" class="offcanvas-soc-icon"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer">
+
+        <!-- Wave Divider -->
+        <div class="footer-wave-top">
+            <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="#002555" />
+            </svg>
+        </div>
+
+        <!-- Main Footer -->
+        <div class="footer-main">
+
+            <!-- Decorative orbs -->
+            <div class="footer-orb footer-orb-1"></div>
+            <div class="footer-orb footer-orb-2"></div>
+
+            <div class="container">
+                <div class="row g-5 pt-4">
+
+                    <!-- COL 1: Brand -->
+                    <div class="col-lg-4 footer-col reveal-footer">
+                        <div class="footer-brand mb-4" dir="ltr">
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <div class="footer-logo-icon">
+                                    <i class="fa-solid fa-droplet text-white fs-4"></i>
+                                </div>
+                                <div>
+                                    <div class="footer-logo-pr">PR</div>
+                                    <div class="footer-logo-sub">professionals</div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="footer-desc">
+                            شركة متخصصة في كشف تسربات المياه بأحدث الأجهزة الإلكترونية العالمية وبدون تكسير. خبرة تمتد لأكثر من 10 سنوات في خدمة عملائنا في جميع أنحاء مصر.
+                        </p>
+                        <!-- Cert badges -->
+                        <div class="d-flex flex-wrap gap-2 mb-4">
+                            <span class="footer-badge"><i class="fa-solid fa-certificate me-1"></i> ISO معتمد</span>
+                            <span class="footer-badge"><i class="fa-solid fa-shield-check me-1"></i> ضمان 10 سنوات</span>
+                            <span class="footer-badge"><i class="fa-solid fa-headset me-1"></i> 24/7</span>
+                        </div>
+                        <!-- Social -->
+                        <div class="d-flex gap-3">
+                            <a href="https://www.facebook.com/share/1F7CJuqa5V/" target="_blank" class="footer-social facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#" class="footer-social twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                            <a href="https://www.instagram.com/professionalsleak" target="_blank" class="footer-social instagram"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="https://wa.me/201222586912?text=مرحبا%20انا%20مهتم%20بخدماتكم" target="_blank" class="footer-social whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- COL 2: Contact & Hours -->
+                    <div class="col-lg-8">
+                        <div class="row g-4">
+                            <!-- Contact Column -->
+                            <div class="col-md-6 footer-col reveal-footer" style="transition-delay:.3s">
+                                <h5 class="footer-col-title">تواصل معنا</h5>
+                                <div class="footer-contact-list">
+                                    <div class="footer-contact-item">
+                                        <div class="footer-contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+                                        <div>
+                                            <span class="footer-contact-label">العنوان</span>
+                                            <span class="footer-contact-value">القاهرة، مصر</span>
+                                        </div>
+                                    </div>
+                                    <div class="footer-contact-item">
+                                        <div class="footer-contact-icon"><i class="fa-solid fa-phone"></i></div>
+                                        <div>
+                                            <span class="footer-contact-label">الهاتف</span>
+                                            <a href="tel:+201222586912" class="footer-contact-value" dir="ltr">+20 122 258 6912</a>
+                                        </div>
+                                    </div>
+                                    <div class="footer-contact-item">
+                                        <div class="footer-contact-icon"><i class="fa-solid fa-envelope"></i></div>
+                                        <div>
+                                            <span class="footer-contact-label">البريد</span>
+                                            <a href="mailto:professionalsleak@gmail.com" class="footer-contact-value">professionalsleak@gmail.com</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Hours Column (Now Beside Contact) -->
+                            <div class="col-md-6 footer-col reveal-footer" style="transition-delay:.45s">
+                                <h5 class="footer-col-title">ساعات العمل</h5>
+                                <div class="footer-hours-box">
+                                    <div class="d-flex align-items-center gap-2 mb-3">
+                                        <i class="fa-solid fa-clock text-cyan"></i>
+                                        <span class="fw-bold text-white small">أوقات العمل العادية</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between small mb-2">
+                                        <span class="text-white opacity-75">السبت — الخميس</span>
+                                        <span class="text-white fw-bold">8ص — 10م</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between small mb-3">
+                                        <span class="text-white opacity-75">الجمعة</span>
+                                        <span class="text-cyan fw-bold">10ص — 6م</span>
+                                    </div>
+                                    <div class="footer-emergency-badge">
+                                        <span class="pulse-dot"></span>
+                                        متاح 24/7 للطوارئ
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Copyright - Text Centered -->
+        <div class="footer-copyright">
+            <div class="container">
+                <div class="row align-items-center g-3">
+                    <div class="col-12 text-center">
+                        <p class="mb-0 footer-copy-text">
+                            © @DateTime.Now.Year جميع الحقوق محفوظة لـ PR Professionals |
+                            تم التطوير بواسطة <a href="https://portfolio-ezzat-karem.netlify.app/" target="_blank" class="footer-dev-link">Ezzat Karem</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+
+    <!-- Back to Top -->
+    <div class="back-to-top">
+        <i class="fa-solid fa-chevron-up"></i>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

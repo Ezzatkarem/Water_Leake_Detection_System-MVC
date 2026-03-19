@@ -1,0 +1,109 @@
+@model IEnumerable<Profissonal.PPL.ModelVM.MediaItemVM>
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "معرض الصور";
+}
+
+<div class="animate__animated animate__fadeIn">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-0">معرض الصور</h3>
+            <p class="text-muted small mb-0">إدارة الصور المعروضة في الصفحة الرئيسية للموقع</p>
+        </div>
+        <a asp-action="AddImage" class="btn btn-primary rounded-pill px-4 shadow-sm">
+            <i class="fa-solid fa-plus me-2"></i> إضافة صورة جديدة
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success border-0 rounded-4 shadow-sm p-3 mb-4 d-flex align-items-center">
+            <i class="fa-solid fa-circle-check fs-4 me-3"></i>
+            <div>@TempData["Success"]</div>
+        </div>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col-xl-3 col-lg-4 col-md-6" data-aos="zoom-in">
+                    <div class="glass-card bg-white p-0 overflow-hidden h-100 hover-lift shadow-sm border-0">
+                        <div class="p-3 bg-light border-bottom">
+                            <h6 class="fw-bold mb-0 text-truncate text-primary" title="@item.Title">@item.Title</h6>
+                        </div>
+                        <div class="position-relative gallery-item">
+                            <img src="@item.FilePath" class="w-100" style="height: 220px; object-fit: cover;" alt="@item.Title">
+                            
+                            <!-- Actions Overlay -->
+                            <div class="action-overlay d-flex align-items-center justify-content-center gap-2">
+                                <form asp-action="Delete" method="post" onsubmit="return confirm('حذف هذه الصورة؟')">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" class="btn btn-danger rounded-circle p-3 shadow">
+                                        <i class="fa-solid fa-trash-can fs-5"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="glass-card bg-white p-5 text-center">
+            <div class="opacity-25 mb-4">
+                <i class="fa-solid fa-images display-1"></i>
+            </div>
+            <h4>معرض الصور فارغ</h4>
+            <p class="text-muted">أضف بعض الصور الحقيقية لأعمال الكشف والإصلاح لزيادة ثقة العملاء.</p>
+            <a asp-action="AddImage" class="btn btn-primary rounded-pill px-5 py-2 mt-3">إضافة أول صورة</a>
+        </div>
+    }
+</div>
+
+<style>
+    .action-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.4);
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .gallery-item:hover .action-overlay {
+        opacity: 1;
+    }
+
+    /* Mobile: Always show overlay or at least the delete button */
+    @@media (max-width: 768px) {
+        .action-overlay {
+            opacity: 1;
+            background: transparent;
+            height: auto;
+            top: auto;
+            bottom: 10px;
+            right: 10px;
+            left: auto;
+            width: auto;
+        }
+        .action-overlay .btn {
+            padding: 10px !important;
+        }
+    }
+
+    .hover-lift {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .hover-lift:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+</style>

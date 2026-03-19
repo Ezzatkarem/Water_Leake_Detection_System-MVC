@@ -1,0 +1,637 @@
+@using Profissonal.PPL.ModelVM
+@model LeakRequestVM
+
+@{
+    ViewData["Title"] = "الرئيسية - شركة كشف التسريبات المحترفة";
+    var photosList = ViewBag.Photos as IEnumerable<MediaItemVM>;
+    var commentsList = ViewBag.Comments as IEnumerable<CommentVM>;
+    var videosList = ViewBag.Videos as IEnumerable<VedioVM>;
+
+    // gradient backgrounds for video cards (rotate through them)
+    var videoGradients = new[]
+    {
+        "linear-gradient(135deg, #003580 0%, #0091CA 100%)",
+        "linear-gradient(135deg, #0091CA 0%, #003580 100%)",
+        "linear-gradient(135deg, #00BCD4 0%, #003580 100%)",
+        "linear-gradient(135deg, #003580 0%, #00BCD4 100%)",
+        "linear-gradient(135deg, #0055aa 0%, #0091CA 100%)"
+    };
+
+    // gradient backgrounds for gallery cards
+    var galleryGradients = new[]
+    {
+        "linear-gradient(135deg,#1a4a6e,#0091CA)",
+        "linear-gradient(135deg,#0d7a55,#00BCD4)",
+        "linear-gradient(135deg,#4a1a6e,#7c3aed)",
+        "linear-gradient(135deg,#6e2a1a,#d97706)",
+        "linear-gradient(135deg,#1a3a6e,#003580)",
+        "linear-gradient(135deg,#1a6e4a,#059669)",
+        "linear-gradient(135deg,#6e1a4a,#be185d)",
+        "linear-gradient(135deg,#3a3a3a,#0091CA)"
+    };
+
+    // avatar gradient backgrounds for comments
+    var avatarGradients = new[]
+    {
+        "linear-gradient(135deg,#00BCD4,#003580)",
+        "linear-gradient(135deg,#0091CA,#00BCD4)",
+        "linear-gradient(135deg,#1a5ca8,#00BCD4)",
+        "linear-gradient(135deg,#003580,#0091CA)",
+        "linear-gradient(135deg,#00BCD4,#1a5ca8)",
+        "linear-gradient(135deg,#0055aa,#00BCD4)"
+    };
+}
+
+<!-- Page Background Extras -->
+<div class="page-bg-container"></div>
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+<!-- ① HERO SECTION V3 -->
+<section class="hero-v3-container text-center">
+    <div class="container">
+        <div class="glass-card-v2 hero-glass-card">
+            <div class="hero-pill-badge reveal reveal-up">
+                <i class="fa-solid fa-droplet fa-spin-slow me-2"></i> شركة متخصصة معتمدة
+            </div>
+            <h1 class="hero-v3-title mb-4 reveal reveal-up delay-1">
+                وداعاً لمشاكل <br>
+                <span class="text-cyan-shimmer">تسربات المياه</span>
+            </h1>
+            <p class="fs-5 text-muted mb-5 reveal reveal-up delay-2" style="max-width: 650px; margin: 0 auto; line-height: 1.9;">
+                أفضل شركة متخصصة بكشف تسربات المياه إلكترونياً بدون تكسير وبأحدث الأجهزة وبضمان موثق.
+            </p>
+            <div class="d-flex flex-wrap justify-content-center gap-3 hero-v3-btns reveal reveal-up delay-3">
+                <a href="#contact" class="btn btn-primary-v3 btn-lg">
+                    اطلب فحص الآن <i class="fa-solid fa-wrench ms-2"></i>
+                </a>
+                <a href="#track-order" class="btn btn-ghost-v3 btn-lg">
+                    تتبع طلبك <i class="fa-solid fa-magnifying-glass ms-2"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll Hint -->
+        <div class="mt-5 text-cyan reveal reveal-up delay-4">
+            <p class="mb-2 small fw-bold">اسكرول للاستكشاف</p>
+            <i class="fa-solid fa-chevron-down animate-bounce fs-4"></i>
+        </div>
+    </div>
+</section>
+
+<!-- ② STATS SECTION -->
+<section class="py-5">
+    <div class="container" style="max-width: 1100px;">
+        <div class="row g-4 text-center">
+            <div class="col-6 col-md-3 reveal reveal-up delay-1">
+                <div class="stats-card-v2">
+                    <i class="fa-solid fa-users stat-icon-v2"></i>
+                    <h2 class="fw-black mb-1 counter" data-target="500">0</h2>
+                    <p class="text-muted mb-0 small fw-bold">عميل راضٍ</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 reveal reveal-up delay-2">
+                <div class="stats-card-v2">
+                    <i class="fa-solid fa-clock stat-icon-v2"></i>
+                    <h2 class="fw-black mb-1 counter" data-target="10">0</h2>
+                    <p class="text-muted mb-0 small fw-bold">سنوات خبرة</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 reveal reveal-up delay-3">
+                <div class="stats-card-v2">
+                    <i class="fa-solid fa-headset stat-icon-v2"></i>
+                    <h2 class="fw-black mb-1">24/7</h2>
+                    <p class="text-muted mb-0 small fw-bold">خدمة متواصلة</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 reveal reveal-up delay-4">
+                <div class="stats-card-v2">
+                    <i class="fa-solid fa-shield-check stat-icon-v2"></i>
+                    <h2 class="fw-black mb-1">100%</h2>
+                    <p class="text-muted mb-0 small fw-bold">ضمان معتمد</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ③ SERVICES SECTION -->
+<section id="services" class="py-5">
+    <div class="container" style="max-width: 1100px;">
+        <div class="text-center mb-5">
+            <span class="section-tag-v2 reveal reveal-right">خدماتنا الأساسية</span>
+            <h2 class="display-5 fw-black mt-3 reveal reveal-up">حلول احترافية لكل <span class="text-cyan">مشكلة تسرب</span></h2>
+            <div class="mx-auto mt-3 reveal reveal-up" style="width: 80px; height: 4px; background: var(--dark); border-radius: 10px;"></div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3 reveal reveal-up delay-1">
+                <div class="service-card-v2 text-end">
+                    <div class="service-icon-box-v2"><i class="fa-solid fa-layer-group"></i></div>
+                    <h4 class="fw-bold mb-3">كشف تسريب الحوائط</h4>
+                    <p class="text-muted small mb-4">كشف دقيق لمواقع التسريب خلف الجدران بأحدث تقنيات الموجات الصوتية.</p>
+                    <a href="#" class="text-cyan fw-bold text-decoration-none">اعرف أكثر ←</a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 reveal reveal-up delay-2">
+                <div class="service-card-v2 text-end">
+                    <div class="service-icon-box-v2"><i class="fa-solid fa-house-crack"></i></div>
+                    <h4 class="fw-bold mb-3">كشف تسريب الأسقف</h4>
+                    <p class="text-muted small mb-4">حماية منزلك من أضرار رطوبة الأسقف عبر تحديد مصدر الرشح بدقة.</p>
+                    <a href="#" class="text-cyan fw-bold text-decoration-none">اعرف أكثر ←</a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 reveal reveal-up delay-3">
+                <div class="service-card-v2 text-end">
+                    <div class="service-icon-box-v2"><i class="fa-solid fa-droplet-slash"></i></div>
+                    <h4 class="fw-bold mb-3">كشف تسريب الخزانات</h4>
+                    <p class="text-muted small mb-4">فحص شامل لخزانات المياه العلوية والأرضية مع تقديم حلول العزل المتكاملة.</p>
+                    <a href="#" class="text-cyan fw-bold text-decoration-none">اعرف أكثر ←</a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 reveal reveal-up delay-4">
+                <div class="service-card-v2 text-end">
+                    <div class="service-icon-box-v2"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h4 class="fw-bold mb-3">عزل وحماية الأسطح</h4>
+                    <p class="text-muted small mb-4">خدمات عزل مائي وحراري للأسطح باستخدام أفضل المواد المعتمدة عالمياً.</p>
+                    <a href="#" class="text-cyan fw-bold text-decoration-none">اعرف أكثر ←</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ⑤ VIDEOS SECTION — بيانات حقيقية من ViewBag.Videos -->
+<section id="videos" class="py-5" style="background: linear-gradient(180deg, #f0faff 0%, #e0f4fb 100%);">
+    <div class="container py-5 text-center">
+        <div class="section-header mb-5 anim-fadeUp">
+            <span class="badge rounded-pill bg-info bg-opacity-10 text-cyan px-4 py-2 mb-3">شاهد بنفسك</span>
+            <h2 class="display-4 fw-black text-dark mb-3">نتائج حقيقية <span class="text-cyan">بكاميرات احترافية</span></h2>
+            <p class="text-muted mb-4 fs-5">توثيق كامل لكل عملية كشف وإصلاح</p>
+            <div class="mx-auto" style="width: 60px; height: 3px; background: linear-gradient(to left, #0091CA, #00BCD4);"></div>
+        </div>
+
+        @if (videosList != null && videosList.Any())
+        {
+            <div class="row g-4 justify-content-center" style="max-width: 1100px; margin: 0 auto;">
+                @{
+                    int vIndex = 0;
+                }
+                @foreach (var video in videosList)
+                {
+                    var vDelay = vIndex % 5;
+
+                    @* رابط الـ embed *@
+                    string embedUrl = !string.IsNullOrEmpty(video.YoutubeVideoId)
+                    ? $"https://www.youtube.com/embed/{video.YoutubeVideoId}"
+                    : (video.YoutubeUrl?
+                    .Replace("watch?v=", "embed/")
+                    .Replace("youtu.be/", "www.youtube.com/embed/")
+                    ?? "#");
+
+                    <div class="col-md-6 col-lg-4 anim-scaleIn" data-delay="@vDelay">
+                        <div class="bg-white overflow-hidden"
+                             style="border-radius:18px; border:1px solid #e5e7eb; box-shadow:0 4px 20px rgba(0,0,0,0.08); transition:all .3s ease;">
+
+                            @* YouTube iframe مباشرة — نفس الصورة بالظبط *@
+                            <div style="position:relative; padding-top:56.25%; background:#000; border-radius:18px 18px 0 0; overflow:hidden;">
+                                <iframe src="@embedUrl"
+                                        title="@video.Dsecription"
+                                        frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowfullscreen
+                                        loading="lazy"
+                                        style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
+                                </iframe>
+                            </div>
+
+                            @* Caption تحت الفيديو — نفس الصورة *@
+                            <div style="padding:16px 20px; text-align:center;">
+                                <p style="font-family:'Cairo',sans-serif; font-weight:800; font-size:1rem; color:#0091CA; margin:0; line-height:1.5;">
+                                    @video.Dsecription
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                    vIndex++;
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center text-muted py-5">
+                <i class="fa-solid fa-video-slash fs-1 mb-3 opacity-25"></i>
+                <p>لا توجد فيديوهات متاحة حالياً</p>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- VIDEO MODAL -->
+<div id="videoModal" class="video-modal-overlay" onclick="closeVideoModal()" style="display:none;">
+    <div class="video-modal-box" onclick="event.stopPropagation()">
+        <button class="video-modal-close" onclick="closeVideoModal()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <h6 id="videoModalTitle" class="fw-bold text-dark mb-3 text-end px-1"></h6>
+        <div class="ratio ratio-16x9">
+            <iframe id="videoModalFrame" src="" allowfullscreen
+                    style="border:none; border-radius:16px;"></iframe>
+        </div>
+    </div>
+</div>
+
+
+<!-- ⑥ GALLERY SECTION — بيانات حقيقية من ViewBag.Photos -->
+<section id="gallery" class="py-5 bg-white">
+    <div class="container py-5 text-center">
+        <div class="section-header mb-5 anim-fadeUp">
+            <span class="badge rounded-pill bg-info bg-opacity-10 text-cyan px-4 py-2 mb-3">معرض أعمالنا</span>
+            <h2 class="display-4 fw-black text-dark mb-3">قبل وبعد <span class="text-cyan">الإصلاح</span></h2>
+            <p class="text-muted mb-4 fs-5">توثيق لأبرز مشاريعنا المنجزة</p>
+        </div>
+
+
+
+        @if (photosList != null && photosList.Any())
+        {
+            <div class="row g-3 anim-fadeUp" style="max-width: 1100px; margin: 0 auto;">
+                @{
+                    int pIndex = 0;
+                }
+                @foreach (var photo in photosList)
+                {
+                    var pGrad = galleryGradients[pIndex % galleryGradients.Length];
+                    var pDelay = pIndex % 6;
+                    bool hasImage = !string.IsNullOrEmpty(photo.FilePath);
+
+                    <div class="col-6 col-md-4 col-lg-3 anim-scaleIn" data-delay="@pDelay">
+                        <div onclick="openLightbox('@photo.FilePath', '@photo.Title')"
+                             style="border-radius:16px; overflow:hidden; background:white; border:1px solid #e5e7eb; box-shadow:0 4px 15px rgba(0,0,0,0.08); cursor:pointer; transition:all .3s cubic-bezier(.34,1.56,.64,1);"
+                             onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 12px 35px rgba(0,145,202,0.2)';"
+                             onmouseout="this.style.transform='';this.style.boxShadow='0 4px 15px rgba(0,0,0,0.08)';">
+
+                            @* الصورة — حجم ثابت *@
+                            <div style="position:relative; height:200px; overflow:hidden;">
+                                @if (hasImage)
+                                {
+                                    <img src="@photo.FilePath"
+                                         alt="@photo.Title"
+                                         style="width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s ease;" />
+                                }
+                                else
+                                {
+                                    <div style="width:100%; height:100%; background:@pGrad; display:flex; align-items:center; justify-content:center;">
+                                        <i class="fa-solid fa-image text-white opacity-50" style="font-size:2.5rem;"></i>
+                                    </div>
+                                }
+
+                                @* أيقونة الـ zoom عند hover *@
+                                <div style="position:absolute; inset:0; background:rgba(0,53,128,0.45); opacity:0; transition:opacity .3s; display:flex; align-items:center; justify-content:center;"
+                                     class="gallery-hover-overlay">
+                                    <i class="fa-solid fa-magnifying-glass-plus text-white" style="font-size:1.8rem;"></i>
+                                </div>
+                            </div>
+
+                            @* Title تحت الصورة *@
+                            <div style="padding:12px 14px; text-align:center;">
+                                <p style="font-family:'Cairo',sans-serif; font-weight:700; font-size:.9rem; color:#1a2a3a; margin:0; line-height:1.4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                                    @photo.Title
+                                </p>
+                                @if (photo.CreatedAt != default)
+                                {
+                                    <span style="font-size:.75rem; color:#9ca3af;">
+                                        @photo.CreatedAt.ToString("yyyy/MM/dd")
+                                    </span>
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                    pIndex++;
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center text-muted py-5">
+                <i class="fa-solid fa-images fs-1 mb-3 opacity-25"></i>
+                <p>لا توجد صور متاحة حالياً</p>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- LIGHTBOX MODAL -->
+<div id="lightboxModal" class="video-modal-overlay" onclick="closeLightbox()" style="display:none;">
+    <div class="lightbox-box" onclick="event.stopPropagation()">
+        <button class="video-modal-close" onclick="closeLightbox()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <img id="lightboxImg" src="" alt="" style="max-width:100%;max-height:75vh;border-radius:16px;display:block;margin:0 auto;" />
+        <p id="lightboxCaption" class="text-center text-white mt-3 fw-bold"></p>
+    </div>
+</div>
+
+
+<!-- ⑦ TESTIMONIALS SECTION — بيانات حقيقية من ViewBag.Comments -->
+<section id="reviews" class="py-5" style="background: linear-gradient(180deg, #f0faff 0%, #e8f6fd 100%);">
+    <div class="container py-5 text-center">
+        <div class="section-header mb-5 anim-fadeUp">
+            <span class="badge rounded-pill bg-info bg-opacity-10 text-cyan px-4 py-2 mb-3">آراء عملائنا</span>
+            <h2 class="display-4 fw-black text-dark mb-3">ماذا قالوا <span class="text-cyan">عنا؟</span></h2>
+            <div class="mb-3">
+                <i class="fa-solid fa-star text-warning"></i>
+                <i class="fa-solid fa-star text-warning"></i>
+                <i class="fa-solid fa-star text-warning"></i>
+                <i class="fa-solid fa-star text-warning"></i>
+                <i class="fa-solid fa-star text-warning"></i>
+                <span class="ms-2 fw-bold text-muted">4.9/5 من 200+ تقييم</span>
+            </div>
+        </div>
+
+        <div class="stats-bar-v3 anim-scaleIn mb-5 d-flex flex-wrap justify-content-center align-items-center gap-4 py-4 px-5 mx-auto"
+             style="max-width:900px; background:white; border-radius:30px; border:1px solid rgba(0,188,212,0.15);">
+            <div class="stat-item">
+                <h4 class="fw-black text-cyan mb-0" data-count="98">0%</h4>
+                <p class="small text-muted mb-0">راضون</p>
+            </div>
+            <div class="vr mx-3 d-none d-md-block"></div>
+            <div class="stat-item">
+                <h4 class="fw-black text-dark mb-0" data-count="500">+0</h4>
+                <p class="small text-muted mb-0">عميل</p>
+            </div>
+            <div class="vr mx-3 d-none d-md-block"></div>
+            <div class="stat-item">
+                <h4 class="fw-black text-dark mb-0">4.9</h4>
+                <p class="small text-muted mb-0">تقييم</p>
+            </div>
+            <div class="vr mx-3 d-none d-md-block"></div>
+            <div class="stat-item">
+                <h4 class="fw-black text-dark mb-0" data-count="10">0</h4>
+                <p class="small text-muted mb-0">سنوات</p>
+            </div>
+        </div>
+
+        @if (commentsList != null && commentsList.Any())
+        {
+            <div class="row g-4" style="max-width: 1100px; margin: 0 auto;">
+                @{
+                    int cIndex = 0;
+                }
+                @foreach (var comment in commentsList)
+                {
+                    var cDelay = cIndex % 5;
+                    var cGrad = avatarGradients[cIndex % avatarGradients.Length];
+
+                    // أول حرفين من اسم الكاتب للـ Avatar
+                    string authorName = !string.IsNullOrEmpty(comment.Author) ? comment.Author : "مجهول";
+                    string initials = authorName.Length >= 2
+                    ? authorName.Substring(0, 2)
+                    : authorName;
+
+                    // حساب الوقت من CreatedAt
+                    var cd = DateTime.Now - comment.CreatedAt;
+                    string cTime = cd.TotalDays >= 30
+                    ? $"منذ {(int)(cd.TotalDays / 30)} شهر"
+                    : cd.TotalDays >= 1
+                    ? $"منذ {(int)cd.TotalDays} يوم"
+                    : "اليوم";
+
+                    <div class="col-lg-4 anim-fadeUp" data-delay="@cDelay">
+                        <div class="testimonial-card-v3 p-4 bg-white text-end position-relative"
+                             style="border-radius:28px; box-shadow:0 10px 40px rgba(0,100,180,0.07); border:1px solid rgba(0,188,212,0.12);">
+
+                            <i class="fa-solid fa-quote-right position-absolute top-0 start-0 m-3 opacity-10 fs-1 text-cyan"></i>
+
+                            <!-- Stars ثابتة 5 لأن الموديل مفيش Rating -->
+                            <div class="stars mb-3">
+                                <i class="fa-solid fa-star text-warning small"></i>
+                                <i class="fa-solid fa-star text-warning small"></i>
+                                <i class="fa-solid fa-star text-warning small"></i>
+                                <i class="fa-solid fa-star text-warning small"></i>
+                                <i class="fa-solid fa-star text-warning small"></i>
+                            </div>
+
+                            <!-- نص التعليق -->
+                            <p class="text-secondary fs-6 fst-italic mb-3" style="line-height:1.9;">
+                                "@comment.Content"
+                            </p>
+
+                            <hr class="opacity-10" />
+
+                            <!-- معلومات الكاتب -->
+                            <div class="d-flex align-items-center justify-content-end gap-3 pt-2">
+                                <div>
+                                    <h6 class="fw-bold text-dark mb-0">@authorName</h6>
+                                    <span class="small text-muted d-block">
+                                        <i class="fa-solid fa-clock me-1 text-cyan"></i> @cTime
+                                    </span>
+                                </div>
+                                <div class="avatar-circle"
+                                     style="width:48px;height:48px;border-radius:50%;background:@cGrad;color:white;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;border:2px solid rgba(0,188,212,0.3);flex-shrink:0;">
+                                    @initials
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    cIndex++;
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center text-muted py-5">
+                <i class="fa-solid fa-comments fs-1 mb-3 opacity-25"></i>
+                <p>لا توجد تعليقات بعد — كن أول من يقيّم!</p>
+            </div>
+        }
+
+       
+    </div>
+</section>
+
+<!-- استبدل Track Order Section كاملاً في Index.cshtml بالكود ده -->
+<!-- Track Order -->
+<section class="py-5" id="track-order" style="background: linear-gradient(180deg, #fff 0%, #f0faff 100%);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="water-card">
+                    <div class="card-body p-5 text-center">
+
+                        <!-- Icon -->
+                        <div style="width:80px;height:80px;border-radius:24px;background:linear-gradient(135deg,rgba(0,145,202,0.12),rgba(0,188,212,0.18));display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
+                            <i class="fa-solid fa-magnifying-glass" style="font-size:2rem;color:#0091CA;"></i>
+                        </div>
+
+                        <h3 style="font-family:'Cairo',sans-serif;font-size:1.8rem;font-weight:800;color:#0d2137;margin-bottom:12px;">
+                            تتبع طلبك
+                        </h3>
+                        <p style="color:#546e7a;font-size:1rem;line-height:1.8;max-width:420px;margin:0 auto 28px;">
+                            هل قمت بطلب خدمة سابقاً؟ تتبع حالة طلبك بسهولة من خلال رقم الهاتف الخاص بك.
+                        </p>
+
+                        <a asp-action="GetByPhone" asp-controller="Home" class="water-btn">
+                            <i class="fa-solid fa-phone"></i>
+                            بحث برقم التليفون
+                            <i class="fa-solid fa-arrow-left ms-1"></i>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ④ FORM SECTION -->
+<section id="contact" class="py-5 mb-5">
+    <div class="container">
+        <div class="form-card-v2 mx-auto reveal reveal-up" style="max-width: 780px;">
+            <div class="form-header-v2">
+                <div class="form-icon-pulse">
+                    <i class="fa-solid fa-clipboard-check fs-4"></i>
+                </div>
+                <h2 class="fw-black mb-2">إرسال طلب فحص جديد</h2>
+                <p class="mb-0 opacity-80">يرجى تعبئة البيانات وسنتواصل معك فوراً لتحديد الموعد</p>
+            </div>
+            <div class="form-body-v2">
+                <form asp-action="Index" asp-controller="Home" method="post" dir="rtl">
+                    @Html.AntiForgeryToken()
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="fw-bold mb-2 small text-muted">اسم العميل</label>
+                            <div class="input-group-v2">
+                                <input type="text" asp-for="ClientName" class="input-v2" placeholder="الاسم الكريم" required />
+                                <i class="fa-solid fa-user input-icon-v2"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="fw-bold mb-2 small text-muted">رقم الهاتف</label>
+                            <div class="input-group-v2">
+                                <input type="tel" asp-for="Phone" class="input-v2" placeholder="01X XXXX XXXX" required />
+                                <i class="fa-solid fa-phone input-icon-v2"></i>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label class="fw-bold mb-2 small text-muted">نوع المشكلة</label>
+                            <div class="input-group-v2">
+                                <select asp-for="ProplemType" class="input-v2" required>
+                                    <option value="" disabled selected>-- يرجى اختيار نوع المشكلة --</option>
+                                    <option value="Wall">تسريب حائط</option>
+                                    <option value="Ceiling">تسريب سقف</option>
+                                    <option value="Tank">تسريب خزان</option>
+                                    <option value="Roof">عزل سطح</option>
+                                    <option value="Other">أخرى</option>
+                                </select>
+                                <i class="fa-solid fa-tools input-icon-v2"></i>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label class="fw-bold mb-2 small text-muted">العنوان</label>
+                            <div class="input-group-v2">
+                                <input type="text" asp-for="Address" class="input-v2" placeholder="المنطقة والشارع" required />
+                                <i class="fa-solid fa-map-marker-alt input-icon-v2"></i>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label class="fw-bold mb-2 small text-muted">وصف المشكلة</label>
+                            <div class="input-group-v2">
+                                <textarea asp-for="Description" class="input-v2" style="min-height: 120px;" placeholder="اكتب تفاصيل المشكلة هنا..."></textarea>
+                                <i class="fa-solid fa-comment input-icon-v2" style="top: 25px; transform: none;"></i>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-submit-v3 ripple">
+                                إرسال الطلب <i class="fa-solid fa-paper-plane ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts {
+    <script>
+        // ═══ VIDEO MODAL ═══
+        function openVideoModal(url, title) {
+            if (!url || url === '#') return;
+            // لو مش embed لسه، حوّله
+            let embedUrl = url;
+            if (url.includes('youtube.com/watch') || url.includes('youtu.be/')) {
+                const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?\s]+)/);
+                if (ytMatch) embedUrl = 'https://www.youtube.com/embed/' + ytMatch[1] + '?autoplay=1';
+            }
+            document.getElementById('videoModalFrame').src = embedUrl;
+            document.getElementById('videoModalTitle').innerText = title || '';
+            document.getElementById('videoModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        function closeVideoModal() {
+            document.getElementById('videoModal').style.display = 'none';
+            document.getElementById('videoModalFrame').src = '';
+            document.body.style.overflow = '';
+        }
+
+        // ═══ LIGHTBOX ═══
+        function openLightbox(imgUrl, title) {
+            if (!imgUrl) return;
+            document.getElementById('lightboxImg').src = imgUrl;
+            document.getElementById('lightboxCaption').innerText = title || '';
+            document.getElementById('lightboxModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLightbox() {
+            document.getElementById('lightboxModal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        // ═══ GALLERY HOVER OVERLAY ═══
+        document.querySelectorAll('.gallery-hover-overlay').forEach(overlay => {
+            const card = overlay.closest('[onclick]');
+            if (!card) return;
+            card.addEventListener('mouseenter', () => overlay.style.opacity = '1');
+            card.addEventListener('mouseleave', () => overlay.style.opacity = '0');
+        });
+
+        // ═══ GALLERY FILTER ═══
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.filter-btn').forEach(b => {
+                    b.classList.remove('active', 'btn-info', 'text-white');
+                    b.classList.add('btn-white', 'text-muted');
+                });
+                this.classList.add('active', 'btn-info', 'text-white');
+                this.classList.remove('btn-white', 'text-muted');
+
+                const filter = this.dataset.filter;
+                document.querySelectorAll('.gallery-item').forEach(item => {
+                    if (filter === 'all' || item.dataset.filter === filter) {
+                        item.style.opacity = '1';
+                        item.style.transform = 'scale(1)';
+                        item.style.display = '';
+                    } else {
+                        item.style.opacity = '0';
+                        item.style.transform = 'scale(0.9)';
+                        setTimeout(() => {
+                            if (item.dataset.filter !== filter && filter !== 'all')
+                                item.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        // Close modals with Escape key
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') { closeVideoModal(); closeLightbox(); }
+        });
+    </script>
+}

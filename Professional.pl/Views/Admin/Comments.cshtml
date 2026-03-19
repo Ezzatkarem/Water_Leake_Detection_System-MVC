@@ -1,0 +1,120 @@
+@using Profissonal.PPL.ModelVM
+@using Profissonal.PPL.Response
+@model Response<IEnumerable<CommentVM>>
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "إدارة التعليقات";
+}
+
+<div class="animate__animated animate__fadeIn">
+    <!-- Header Area -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-0">التعليقات والمراجعات</h3>
+            <p class="text-muted small mb-0">إدارة آراء العملاء المعروضة على الصفحة الرئيسية</p>
+        </div>
+        <a asp-action="AddComment" class="btn btn-primary rounded-pill px-4 shadow-sm">
+            <i class="fa-solid fa-plus me-2"></i> إضافة تعليق يدوي
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show border-0 rounded-4 shadow-sm p-3 mb-4 d-flex align-items-center" role="alert">
+            <i class="fa-solid fa-circle-check fs-4 me-3"></i>
+            <div>@TempData["Success"]</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (Model.Secsses==false)
+    {
+        <div class="alert alert-danger border-0 rounded-4 shadow-sm p-4">
+            <div class="d-flex align-items-center gap-3">
+                <i class="fa-solid fa-circle-xmark fs-2"></i>
+                <h5 class="mb-0">@Model.MessageError</h5>
+            </div>
+        </div>
+    }
+    else if (!Model.Result.Any())
+    {
+        <div class="glass-card bg-white p-5 text-center">
+            <div class="opacity-25 mb-4">
+                <i class="fa-solid fa-comments display-1"></i>
+            </div>
+            <h4>لا يوجد تعليقات حالياً</h4>
+            <p class="text-muted">ابدأ بإضافة تعليقات إيجابية من عملائك لتعزيز المصداقية.</p>
+            <a asp-action="AddComment" class="btn btn-primary rounded-pill px-5 py-2 mt-3">إضافة أول تعليق</a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var item in Model.Result.OrderByDescending(x => x.CreatedAt))
+            {
+                <div class="col-xl-4 col-md-6" data-aos="fade-up">
+                    <div class="glass-card bg-white h-100 p-0 overflow-hidden d-flex flex-column shadow-sm border-0">
+                        <div class="card-body p-4 flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold mb-0">@item.Author</h6>
+                                        <small class="text-muted">@item.CreatedAt.ToString("MMMM yyyy")</small>
+                                    </div>
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn btn-link link-dark p-0" data-bs-toggle="dropdown">
+                                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3">
+                                        <li>
+                                            <form asp-action="DeleteComment" method="post" onsubmit="return confirm('حذف التعليق نهائياً؟')">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@item.ID" />
+                                                <button type="submit" class="dropdown-item text-danger">
+                                                    <i class="fa-solid fa-trash me-2 small"></i> حذف التعليق
+                                                </button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="p-3 bg-light rounded-3 italic position-relative mb-0 mt-3">
+                                <i class="fa-solid fa-quote-right position-absolute top-0 end-0 opacity-10 fs-1 mt-2 me-2"></i>
+                                <p class="mb-0 text-dark opacity-75 small">"@item.Content"</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card-footer bg-light border-0 p-3 mt-auto">
+                            @if (item.isread)
+                            {
+                                <form asp-action="hidecommentTouser" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.ID" />
+                                    <button type="submit" class="btn btn-outline-warning w-100 rounded-pill btn-sm fw-bold border-opacity-25">
+                                        <i class="fa-solid fa-eye-slash me-2"></i> إخفاء من الصفحة الرئيسية
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <form asp-action="addcommentTouser" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.ID" />
+                                    <button type="submit" class="btn btn-success w-100 rounded-pill btn-sm fw-bold shadow-sm">
+                                        <i class="fa-solid fa-eye me-2"></i> عرض في الصفحة الرئيسية
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

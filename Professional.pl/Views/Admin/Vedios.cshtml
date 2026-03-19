@@ -1,0 +1,133 @@
+@using Profissonal.PPL.ModelVM
+@using Profissonal.PPL.Response
+@model Response<IEnumerable<VedioVM>>
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "إدارة الفيديوهات";
+}
+
+@functions {
+    public static string GetYoutubeThumbnail(string url)
+    {
+        if (string.IsNullOrEmpty(url)) return "";
+        string videoId = "";
+        if (url.Contains("youtube.com/watch?v=")) videoId = url.Split("v=")[1].Split("&")[0];
+        else if (url.Contains("youtu.be/")) videoId = url.Split("youtu.be/")[1].Split("?")[0];
+        else if (url.Contains("youtube.com/embed/")) videoId = url.Split("embed/")[1].Split("?")[0];
+
+        return !string.IsNullOrEmpty(videoId) ? $"https://img.youtube.com/vi/{videoId}/mqdefault.jpg" : "";
+    }
+}
+
+<div class="animate__animated animate__fadeIn">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-0">معرض الفيديوهات</h3>
+            <p class="text-muted small mb-0">إدارة فيديوهات اليوتيوب المعروضة في الصفحة الرئيسية</p>
+        </div>
+        <a asp-action="AddVedio" class="btn btn-primary rounded-pill px-4 shadow-sm">
+            <i class="fa-solid fa-plus me-2"></i> إضافة فيديو جديد
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success border-0 rounded-4 shadow-sm p-3 mb-4 d-flex align-items-center">
+            <i class="fa-solid fa-circle-check fs-4 me-3"></i>
+            <div>@TempData["Success"]</div>
+        </div>
+    }
+
+    @if (Model.Secsses==false || Model.Result == null || !Model.Result.Any())
+    {
+        <div class="glass-card bg-white p-5 text-center">
+            <div class="opacity-25 mb-4">
+                <i class="fa-solid fa-video display-1"></i>
+            </div>
+            <h4>لا توجد فيديوهات حالياً</h4>
+            <p class="text-muted">تساعد الفيديوهات في شرح كيفية عمل الأجهزة وتوثيق نجاح المهام.</p>
+            <a asp-action="AddVedio" class="btn btn-primary rounded-pill px-5 py-2 mt-3">إضافة أول فيديو</a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var item in Model.Result)
+            {
+                <div class="col-xl-4 col-md-6" data-aos="fade-up">
+                    <div class="glass-card bg-white h-100 p-0 overflow-hidden shadow-sm hover-lift border-0">
+                        <div class="p-3 bg-light border-bottom">
+                            <h6 class="fw-bold mb-0 text-truncate text-primary" title="@item.Dsecription">@item.Dsecription</h6>
+                        </div>
+                        <div class="position-relative video-container">
+                            @{ var thumb = GetYoutubeThumbnail(item.YoutubeUrl); }
+                            @if (!string.IsNullOrEmpty(thumb)) {
+                                <img src="@thumb" class="w-100" style="height: 220px; object-fit: cover;" alt="Video">
+                            } else {
+                                <div class="bg-dark d-flex align-items-center justify-content-center" style="height: 220px;">
+                                    <i class="fa-solid fa-video fs-1 text-white opacity-25"></i>
+                                </div>
+                            }
+                            <div class="position-absolute top-50 start-50 translate-middle">
+                                <a href="@item.YoutubeUrl" target="_blank" class="play-btn-admin shadow-lg">
+                                    <i class="fa-solid fa-play"></i>
+                                </a>
+                            </div>
+
+                            <div class="mobile-actions d-md-none position-absolute top-0 end-0 p-2">
+                                <form asp-action="DeleteVedio" method="post" onsubmit="return confirm('حذف الفيديو؟')">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" class="btn btn-danger btn-sm rounded-circle shadow">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="p-3 d-none d-md-block">
+                             <form asp-action="DeleteVedio" method="post" onsubmit="return confirm('حذف الفيديو؟')">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <button type="submit" class="btn btn-outline-danger btn-sm w-100 rounded-pill">
+                                    <i class="fa-solid fa-trash me-1"></i> حذف الفيديو
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+                                        
+
+<style>
+    .play-btn-admin {
+        width: 60px;
+        height: 60px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        font-size: 1.5rem;
+        transition: var(--transition-base);
+        text-decoration: none;
+        box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
+    .play-btn-admin:hover {
+        transform: scale(1.1);
+        background: var(--primary);
+        color: white;
+    }
+    .hover-lift {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .hover-lift:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+    }
+</style>

@@ -1,0 +1,783 @@
+@using Profissonal.PPL.ModelVM
+@using Profissonal.PPL.Response
+@model Response<LeakRequestVM>
+
+@{
+    ViewData["Title"] = "تتبع حالة الطلب";
+    var request = Model.Result;
+
+    var statusClass = request.Status == "Pending" ? "pending" :
+                      request.Status == "InProgress" ? "inprogress" : "done";
+
+    var statusLabel = request.Status == "Pending" ? "قيد الانتظار" :
+                      request.Status == "InProgress" ? "جاري التنفيذ" : "مكتمل";
+
+    var statusIcon = request.Status == "Pending" ? "fa-clock" :
+                     request.Status == "InProgress" ? "fa-spinner fa-spin" : "fa-circle-check";
+
+    var progressWidth = request.Status == "Pending" ? "5%" :
+                        request.Status == "InProgress" ? "52%" : "100%";
+
+    var step1 = "filled";
+    var step2 = request.Status == "InProgress" ? "active" : (request.Status == "Done" || request.Status == "Completed" ? "filled" : "");
+    var step3 = (request.Status == "Done" || request.Status == "Completed") ? "active filled" : "";
+
+    var statusMsg = request.Status == "Pending" ? "في انتظار تعيين الفني المختص" :
+                    request.Status == "InProgress" ? "فريقنا في الطريق إليك الآن" :
+                    "تم الانتهاء من الكشف والإصلاح بنجاح ✓";
+}
+
+<style>
+    /* ═══ PAGE BACKGROUND ═══ */
+    .leak-detail-page {
+        min-height: 100vh;
+        padding: 140px 0 80px;
+        position: relative;
+        background: linear-gradient(160deg, #e8f6fd 0%, #f0faff 40%, #e0f4fb 100%);
+    }
+
+        .leak-detail-page::before {
+            content: '';
+            position: fixed;
+            top: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0,145,202,0.12) 0%, transparent 65%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .leak-detail-page::after {
+            content: '';
+            position: fixed;
+            bottom: -150px;
+            left: -150px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0,188,212,0.1) 0%, transparent 65%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+    /* ═══ HEADER CARD ═══ */
+    .page-header-card {
+        background: linear-gradient(135deg, #003580 0%, #0055a5 40%, #0091CA 100%);
+        border-radius: 32px;
+        padding: 40px 48px;
+        margin-bottom: 32px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0,53,128,0.25);
+        animation: slideDownFade 0.6s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+        .page-header-card::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            left: -80px;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+
+        .page-header-card::after {
+            content: '';
+            position: absolute;
+            bottom: -60px;
+            right: -40px;
+            width: 200px;
+            height: 200px;
+            background: rgba(0,188,212,0.12);
+            border-radius: 50%;
+        }
+
+    .ref-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.25);
+        border-radius: 50px;
+        padding: 6px 18px;
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.9rem;
+        margin-bottom: 12px;
+        backdrop-filter: blur(10px);
+    }
+
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 20px;
+        border-radius: 50px;
+        font-weight: 800;
+        font-size: 0.9rem;
+        border: 2px solid rgba(255,255,255,0.3);
+    }
+
+        .status-pill.pending {
+            background: rgba(251,191,36,0.2);
+            color: #fde68a;
+            border-color: rgba(251,191,36,0.4);
+        }
+
+        .status-pill.inprogress {
+            background: rgba(96,165,250,0.2);
+            color: #bfdbfe;
+            border-color: rgba(96,165,250,0.4);
+        }
+
+        .status-pill.done {
+            background: rgba(52,211,153,0.2);
+            color: #a7f3d0;
+            border-color: rgba(52,211,153,0.4);
+        }
+
+    /* ═══ CARDS ═══ */
+    .pro-card {
+        background: rgba(255,255,255,0.92);
+        backdrop-filter: blur(20px);
+        border-radius: 28px;
+        border: 1px solid rgba(0,145,202,0.12);
+        box-shadow: 0 8px 40px rgba(0,100,180,0.08);
+        padding: 36px;
+        transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+        animation: fadeUpIn 0.7s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+        .pro-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0,100,180,0.14);
+            border-color: rgba(0,145,202,0.25);
+        }
+
+    .card-title-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 28px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(0,145,202,0.1);
+    }
+
+    .card-title-icon {
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(135deg, #0091CA, #00BCD4);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.1rem;
+        box-shadow: 0 6px 16px rgba(0,145,202,0.3);
+        flex-shrink: 0;
+    }
+
+    .card-title-text {
+        font-family: 'Cairo', sans-serif;
+        font-weight: 800;
+        font-size: 1.1rem;
+        color: #0d2137;
+        margin: 0;
+    }
+
+    /* ═══ TIMELINE ═══ */
+    .timeline-wrap {
+        position: relative;
+        padding: 40px 20px 20px;
+    }
+
+    .timeline-track {
+        position: absolute;
+        top: 55px;
+        left: 10%;
+        right: 10%;
+        height: 6px;
+        background: #e2ecf4;
+        border-radius: 3px;
+        overflow: hidden;
+    }
+
+    .timeline-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #003580, #0091CA, #00BCD4);
+        border-radius: 3px;
+        transition: width 1.8s cubic-bezier(0.4,0,0.2,1);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .timeline-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -60%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            animation: shimmerLine 2s infinite 1.5s;
+        }
+
+    @@keyframes shimmerLine {
+        0% {
+            left: -60%;
+        }
+
+        100% {
+            left: 120%;
+        }
+    }
+
+    .timeline-steps {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .tl-step {
+        text-align: center;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .tl-icon {
+        width: 68px;
+        height: 68px;
+        background: white;
+        border: 4px solid #e2ecf4;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: #b0bec5;
+        transition: all 0.5s cubic-bezier(0.34,1.56,0.64,1);
+        position: relative;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .tl-step.active .tl-icon {
+        border-color: #0091CA;
+        color: #0091CA;
+        transform: scale(1.15);
+        box-shadow: 0 0 0 8px rgba(0,145,202,0.1), 0 8px 24px rgba(0,145,202,0.25);
+        animation: iconPulse 2s infinite;
+    }
+
+    .tl-step.filled .tl-icon {
+        background: linear-gradient(135deg, #003580, #0091CA);
+        border-color: #0091CA;
+        color: white;
+        box-shadow: 0 8px 24px rgba(0,145,202,0.35);
+    }
+
+    @@keyframes iconPulse {
+        0%, 100% {
+            box-shadow: 0 0 0 8px rgba(0,145,202,0.1), 0 8px 24px rgba(0,145,202,0.25);
+        }
+
+        50% {
+            box-shadow: 0 0 0 14px rgba(0,145,202,0.05), 0 8px 24px rgba(0,145,202,0.25);
+        }
+    }
+
+    .tl-label {
+        font-family: 'Cairo', sans-serif;
+        font-weight: 800;
+        font-size: 0.9rem;
+        color: #90a4ae;
+        transition: color 0.3s;
+    }
+
+    .tl-step.active .tl-label {
+        color: #0091CA;
+    }
+
+    .tl-step.filled .tl-label {
+        color: #003580;
+    }
+
+    /* ═══ STATUS BANNER ═══ */
+    .status-banner {
+        margin-top: 32px;
+        background: linear-gradient(135deg, rgba(0,53,128,0.06), rgba(0,145,202,0.08));
+        border: 1px solid rgba(0,145,202,0.2);
+        border-radius: 20px;
+        padding: 20px 28px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .status-banner-icon {
+        width: 52px;
+        height: 52px;
+        background: linear-gradient(135deg, #0091CA, #00BCD4);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.3rem;
+        flex-shrink: 0;
+        box-shadow: 0 8px 20px rgba(0,145,202,0.3);
+    }
+
+    .status-banner h5 {
+        font-family: 'Cairo', sans-serif;
+        font-weight: 800;
+        color: #0d2137;
+        margin: 0 0 4px;
+        font-size: 1.05rem;
+    }
+
+    .status-banner p {
+        color: #546e7a;
+        margin: 0;
+        font-size: 0.88rem;
+    }
+
+    /* ═══ DATA FIELDS ═══ */
+    .data-field {
+        padding: 16px;
+        background: rgba(0,145,202,0.04);
+        border-radius: 14px;
+        border: 1px solid rgba(0,145,202,0.08);
+        transition: all 0.3s ease;
+    }
+
+        .data-field:hover {
+            background: rgba(0,145,202,0.08);
+            border-color: rgba(0,145,202,0.2);
+        }
+
+        .data-field label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #90a4ae;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+            .data-field label i {
+                color: #0091CA;
+                font-size: 0.85rem;
+            }
+
+        .data-field .value {
+            font-family: 'Cairo', sans-serif;
+            font-weight: 800;
+            font-size: 1.05rem;
+            color: #0d2137;
+            margin: 0;
+        }
+
+            .data-field .value.accent {
+                color: #0091CA;
+            }
+
+    /* ═══ NOTE FORM ═══ */
+    .note-textarea {
+        width: 100%;
+        background: rgba(0,145,202,0.04);
+        border: 1.5px solid rgba(0,145,202,0.15);
+        border-radius: 16px;
+        padding: 16px 20px;
+        font-family: 'Cairo', sans-serif;
+        font-size: 0.95rem;
+        color: #0d2137;
+        resize: none;
+        transition: all 0.3s ease;
+        outline: none;
+    }
+
+        .note-textarea:focus {
+            border-color: #0091CA;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(0,145,202,0.1);
+        }
+
+    .btn-send {
+        width: 100%;
+        background: linear-gradient(135deg, #003580, #0091CA);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 14px 24px;
+        font-family: 'Cairo', sans-serif;
+        font-weight: 800;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+        box-shadow: 0 8px 25px rgba(0,53,128,0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .btn-send::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.5s;
+        }
+
+        .btn-send:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 14px 35px rgba(0,53,128,0.4);
+        }
+
+            .btn-send:hover::after {
+                left: 150%;
+            }
+
+    /* ═══ NOTE DISPLAY ═══ */
+    .note-display {
+        background: linear-gradient(135deg, rgba(0,53,128,0.05), rgba(0,145,202,0.08));
+        border: 1px solid rgba(0,145,202,0.2);
+        border-right: 4px solid #0091CA;
+        border-radius: 16px;
+        padding: 20px 24px;
+    }
+
+        .note-display h6 {
+            font-family: 'Cairo', sans-serif;
+            font-weight: 800;
+            color: #0091CA;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .note-display p {
+            color: #37474f;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin: 0;
+            font-style: italic;
+        }
+
+    .contact-box {
+        margin-top: 20px;
+        text-align: center;
+        padding: 20px;
+        background: rgba(0,145,202,0.05);
+        border-radius: 16px;
+        border: 1px dashed rgba(0,145,202,0.25);
+    }
+
+        .contact-box p {
+            color: #90a4ae;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .contact-box a {
+            font-family: 'Cairo', sans-serif;
+            font-weight: 900;
+            font-size: 1.5rem;
+            color: #0091CA;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+            .contact-box a:hover {
+                color: #003580;
+            }
+
+    /* ═══ BACK BUTTON ═══ */
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255,255,255,0.8);
+        border: 1px solid rgba(0,145,202,0.2);
+        border-radius: 50px;
+        padding: 12px 28px;
+        color: #546e7a;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 0.92rem;
+        transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+        backdrop-filter: blur(10px);
+    }
+
+        .btn-back:hover {
+            background: white;
+            color: #0091CA;
+            border-color: #0091CA;
+            transform: translateX(5px);
+            box-shadow: 0 8px 24px rgba(0,145,202,0.15);
+        }
+
+    /* ═══ ANIMATIONS ═══ */
+    @@keyframes slideDownFade {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes fadeUpIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .delay-1 {
+        animation-delay: 0.15s;
+    }
+
+    .delay-2 {
+        animation-delay: 0.3s;
+    }
+
+    .delay-3 {
+        animation-delay: 0.45s;
+    }
+
+    /* ═══ RESPONSIVE ═══ */
+    @@media (max-width: 767px) {
+        .page-header-card {
+            padding: 28px 24px;
+        }
+
+        .pro-card {
+            padding: 24px 20px;
+        }
+
+        .tl-icon {
+            width: 52px;
+            height: 52px;
+            font-size: 1.1rem;
+        }
+
+        .tl-label {
+            font-size: 0.78rem;
+        }
+
+        .timeline-wrap {
+            padding: 30px 10px 10px;
+        }
+
+        .timeline-track {
+            top: 42px;
+            left: 8%;
+            right: 8%;
+        }
+    }
+</style>
+
+<div class="leak-detail-page">
+    <div class="container" style="max-width: 980px; position: relative; z-index: 1;">
+
+        <!-- ① HEADER -->
+        <div class="page-header-card">
+            <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                <div>
+                    <div class="ref-badge">
+                        <i class="fa-solid fa-hashtag"></i>
+                        رقم المرجع @request.Id
+                    </div>
+                    <h2 style="color:white; font-family:'Cairo',sans-serif; font-weight:900; font-size:1.8rem; margin:0 0 8px;">
+                        حالة طلب الفحص
+                    </h2>
+                    <p style="color:rgba(255,255,255,0.7); margin:0; font-size:0.92rem;">
+                        <i class="fa-regular fa-calendar me-1"></i>
+                        تاريخ الطلب: <strong style="color:white;">@request.CreatedAt.ToString("dd MMMM yyyy")</strong>
+                    </p>
+                </div>
+                <div class="text-end">
+                    <div class="status-pill @statusClass">
+                        <i class="fa-solid @statusIcon"></i>
+                        @statusLabel
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ② TIMELINE CARD -->
+        <div class="pro-card mb-4 delay-1">
+            <div class="card-title-row">
+                <div class="card-title-icon">
+                    <i class="fa-solid fa-route"></i>
+                </div>
+                <h5 class="card-title-text">مسار الطلب</h5>
+            </div>
+
+            <div class="timeline-wrap">
+                <div class="timeline-track">
+                    <div class="timeline-fill" style="width: @progressWidth"></div>
+                </div>
+                <div class="timeline-steps">
+                    <div class="tl-step @step1">
+                        <div class="tl-icon"><i class="fa-solid fa-file-signature"></i></div>
+                        <div class="tl-label">تم استلام الطلب</div>
+                    </div>
+                    <div class="tl-step @step2">
+                        <div class="tl-icon">
+                            <i class="fa-solid fa-screwdriver-wrench @(request.Status == "InProgress" ? "fa-spin" : "")"></i>
+                        </div>
+                        <div class="tl-label">الفحص قيد التنفيذ</div>
+                    </div>
+                    <div class="tl-step @step3">
+                        <div class="tl-icon"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="tl-label">تمت المهمة</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status-banner">
+                <div class="status-banner-icon">
+                    <i class="fa-solid @statusIcon"></i>
+                </div>
+                <div>
+                    <h5>الحالة الحالية</h5>
+                    <p>@statusMsg</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ③ DETAILS + NOTE -->
+        <div class="row g-4">
+            <!-- بيانات الخدمة -->
+            <div class="col-lg-7">
+                <div class="pro-card h-100 delay-2">
+                    <div class="card-title-row">
+                        <div class="card-title-icon">
+                            <i class="fa-solid fa-receipt"></i>
+                        </div>
+                        <h5 class="card-title-text">بيانات الخدمة</h5>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <div class="data-field">
+                                <label><i class="fa-solid fa-user"></i> صاحب الطلب</label>
+                                <p class="value">@request.ClientName</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="data-field">
+                                <label><i class="fa-solid fa-tools"></i> نوع المشكلة</label>
+                                <p class="value accent">@request.ProplemType</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="data-field">
+                                <label><i class="fa-solid fa-phone"></i> رقم التليفون</label>
+                                <p class="value" dir="ltr">@request.Phone</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="data-field">
+                                <label><i class="fa-solid fa-calendar-check"></i> تاريخ الطلب</label>
+                                <p class="value">@request.CreatedAt.ToString("dd/MM/yyyy")</p>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="data-field">
+                                <label><i class="fa-solid fa-location-dot"></i> موقع الفحص</label>
+                                <p class="value">@request.Address</p>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="data-field">
+                                <label><i class="fa-solid fa-comment"></i> وصف المشكلة</label>
+                                <p class="value" style="font-weight:600; color:#546e7a; font-size:0.95rem; line-height:1.7;">
+                                    @(string.IsNullOrEmpty(request.Description) ? "لم يتم إضافة وصف" : request.Description)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تواصل معنا -->
+            <div class="col-lg-5">
+                <div class="pro-card h-100 delay-3">
+                    <div class="card-title-row">
+                        <div class="card-title-icon">
+                            <i class="fa-solid fa-comment-dots"></i>
+                        </div>
+                        <h5 class="card-title-text">تواصل معنا</h5>
+                    </div>
+
+                    @if (string.IsNullOrEmpty(request.ClientNote))
+                    {
+                        <p style="color:#90a4ae; font-size:0.9rem; margin-bottom:20px; line-height:1.7;">
+                            هل تريد إضافة تفاصيل للفني المختص؟ اكتب ملاحظتك وسنراها فوراً.
+                        </p>
+                        <form asp-action="AddNote" asp-controller="Home" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@request.Id" />
+                            <input type="hidden" name="clientName" value="@request.ClientName" />
+                            <div class="mb-3">
+                                <textarea name="note" class="note-textarea" rows="5"
+                                      placeholder="اكتب ملاحظتك هنا..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn-send">
+                                <i class="fa-solid fa-paper-plane me-2"></i> إرسال الملاحظة
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="note-display">
+                            <h6><i class="fa-solid fa-quote-right"></i> ملاحظتك المرسلة</h6>
+                            <p>@request.ClientNote</p>
+                        </div>
+                        <div class="contact-box">
+                            <p><i class="fa-solid fa-headset me-1"></i> لأي استفسار إضافي اتصل بنا</p>
+                            <a href="tel:+201222586912" dir="ltr">+20 122 258 6912</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- ④ BACK -->
+        <div class="text-center mt-5">
+            <a asp-action="GetByPhone" asp-controller="Home" class="btn-back">
+                <i class="fa-solid fa-arrow-right"></i>
+                العودة لقائمة الطلبات
+            </a>
+        </div>
+
+    </div>
+</div>

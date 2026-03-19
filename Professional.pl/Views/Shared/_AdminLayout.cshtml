@@ -1,0 +1,350 @@
+@using Profissonal.PPL.ModelVM
+@{
+    var culture = Context.Request.Cookies["Language"] ?? "ar";
+    var isRTL = culture == "ar";
+}
+
+<!DOCTYPE html>
+<html lang="@culture" dir="@(isRTL ? "rtl" : "ltr")">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - لوحة الإدارة</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    
+    <style>
+        :root {
+            --sidebar-width: 280px;
+            --primary-blue: #003580;
+            --accent-cyan: #00bbcc;
+            --bg-light: #f8fafc;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            background-color: var(--bg-light);
+            font-family: 'Cairo', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+        }
+
+        /* Sidebar Styling */
+        .admin-sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            right: 0; /* Right side for RTL */
+            background: var(--primary-blue);
+            color: white;
+            z-index: 1500;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem 0;
+        }
+
+        .sidebar-brand {
+            padding: 0 1.5rem 2rem;
+            text-align: center;
+        }
+
+        .sidebar-brand h4 {
+            font-weight: 800;
+            margin-bottom: 0.2rem;
+            font-size: 1.5rem;
+        }
+
+        .sidebar-brand p {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-bottom: 0;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-item {
+            margin: 0.5rem 1rem;
+        }
+
+        .nav-link-admin {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .nav-link-admin i {
+            font-size: 1.2rem;
+            width: 25px;
+            text-align: center;
+        }
+
+        .nav-link-admin:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .nav-link-admin.active {
+            background: var(--accent-cyan);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 187, 204, 0.3);
+        }
+
+        /* Main Content */
+        .admin-main {
+            margin-right: var(--sidebar-width);
+            margin-left: 0;
+            transition: var(--transition);
+            padding: 1.5rem;
+            min-height: 100vh;
+        }
+
+        /* Header Styling */
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.3rem;
+            color: #64748b;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 5px;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .user-profile {
+            width: 45px;
+            height: 45px;
+            background: #3b82f6;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        /* Mobile View */
+        @@media (max-width: 991px) {
+            .admin-sidebar {
+                right: -100%;
+                transition: right 0.3s ease;
+                z-index: 1550;
+            }
+
+            body.sidebar-open .admin-sidebar {
+                right: 0;
+            }
+
+            .admin-main {
+                margin-right: 0;
+            }
+
+            .sidebar-toggle-btn {
+                display: block !important;
+            }
+
+            body.sidebar-open::after {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1400;
+                transition: opacity 0.3s ease;
+            }
+        }
+
+        .sidebar-toggle-btn {
+            display: none !important;
+            background: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            cursor: pointer;
+            z-index: 1600;
+            position: relative;
+        }
+
+        /* Responsive Grid for Content */
+        .glass-card {
+            border-radius: 20px;
+            border: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        /* من السطر 100 تقريباً - أضف هذا الكود */
+        body.sidebar-open .admin-main {
+            opacity: 0.3;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+            body.sidebar-open .admin-main::before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: transparent;
+                z-index: 1450;
+            }
+    </style>
+</head>
+<body class="@(isRTL ? "rtl" : "")">
+    
+    <!-- Right Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="sidebar-brand">
+            <h4>لوحة الإدارة</h4>
+            <p>شركة كشف التسربات</p>
+        </div>
+        
+        <nav class="flex-grow-1">
+            <ul class="sidebar-nav">
+                <li class="nav-item">
+                    <a asp-action="Index" asp-controller="Admin" class="nav-link-admin @(ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")">
+                        <span><i class="fa-solid fa-list-check me-2"></i> الطلبات الواردة</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-action="Images" asp-controller="Admin" class="nav-link-admin @(ViewContext.RouteData.Values["Action"]?.ToString() == "Images" ? "active" : "")">
+                        <span><i class="fa-solid fa-images me-2"></i> معرض الصور</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-action="Vedios" asp-controller="Admin" class="nav-link-admin @(ViewContext.RouteData.Values["Action"]?.ToString() == "Vedios" ? "active" : "")">
+                        <span><i class="fa-solid fa-video me-2"></i> الفيديوهات</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-action="Comments" asp-controller="Admin" class="nav-link-admin @(ViewContext.RouteData.Values["Action"]?.ToString() == "Comments" ? "active" : "")">
+                         <span><i class="fa-solid fa-comment-dots me-2"></i> التعليقات</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-action="Admins" asp-controller="Account" class="nav-link-admin @(ViewContext.RouteData.Values["Action"]?.ToString() == "Admins" ? "active" : "")">
+                         <span><i class="fa-solid fa-user-shield me-2"></i> المشرفون</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="px-4 mt-auto">
+            <form asp-action="LogOut" asp-controller="Account" method="post">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-outline-light w-100 rounded-pill border-opacity-25">
+                    <i class="fa-solid fa-arrow-right-from-bracket me-2"></i> تسجيل الخروج
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <header class="admin-header">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()" style="display: block !important;">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div class="ms-auto header-actions">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="user-profile">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div>
+                        <p class="mb-0 text-muted" style="font-size:0.75rem;">مرحباً،</p>
+                        <p class="mb-0 fw-bold text-dark" style="font-size:0.9rem;">
+                            @User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value
+                        </p>
+                    </div>
+                </div>
+            </div>
+           
+        </header>
+
+        <div class="container-fluid">
+            @RenderBody()
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        function toggleSidebar() {
+            document.body.classList.toggle('sidebar-open');
+
+            // منع التمرير في الخلفية لما القائمة مفتوحة
+            if (document.body.classList.contains('sidebar-open')) {
+                document.body.style.overflow = 'hidden';
+
+                setTimeout(() => {
+                    document.body.addEventListener('click', function closeSidebar(e) {
+                        if (!e.target.closest('.admin-sidebar') && !e.target.closest('.sidebar-toggle-btn')) {
+                            document.body.classList.remove('sidebar-open');
+                            document.body.style.overflow = '';
+                            document.body.removeEventListener('click', closeSidebar);
+                        }
+                    });
+                }, 100);
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 991) {
+                document.body.classList.remove('sidebar-open');
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

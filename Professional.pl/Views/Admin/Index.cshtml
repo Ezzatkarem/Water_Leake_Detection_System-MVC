@@ -1,0 +1,169 @@
+@using Profissonal.PPL.ModelVM
+@using Profissonal.PPL.Response
+@model Response<IEnumerable<LeakRequestVM>>
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "الطلبات الواردة";
+}
+
+<div class="container-fluid animate__animated animate__fadeIn">
+    <!-- Stats Row -->
+    @if (Model.Secsses==true && Model.Result.Any())
+    {
+        var total = Model.Result.Count();
+        var pending = Model.Result.Count(r => r.Status == "Pending");
+        var inProgress = Model.Result.Count(r => r.Status == "InProgress");
+        var completed = Model.Result.Count(r => r.Status == "Completed");
+
+        <div class="row g-4 mb-4">
+            <div class="col-xl-3 col-md-6" data-aos="zoom-in" data-aos-delay="100">
+                <div class="glass-card p-4 text-white position-relative overflow-hidden h-100 shadow" style="background: linear-gradient(135deg, #003580, #0056b3);">
+                    <div class="position-relative z-1">
+                        <h6 class="text-white-50 small fw-bold">إجمالي الطلبات</h6>
+                        <h2 class="display-5 fw-bold mb-0">@total</h2>
+                    </div>
+                    <i class="fa-solid fa-list-ul position-absolute top-50 start-0 translate-middle-y opacity-25" style="font-size: 5rem; margin-left: -20px;"></i>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6" data-aos="zoom-in" data-aos-delay="200">
+                <div class="glass-card p-4 text-white position-relative overflow-hidden h-100 shadow" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
+                    <div class="position-relative z-1">
+                        <h6 class="text-white-50 small fw-bold">قيد الانتظار</h6>
+                        <h2 class="display-5 fw-bold mb-0">@pending</h2>
+                    </div>
+                    <i class="fa-regular fa-clock position-absolute top-50 start-0 translate-middle-y opacity-25" style="font-size: 5rem; margin-left: -20px;"></i>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6" data-aos="zoom-in" data-aos-delay="300">
+                <div class="glass-card p-4 text-white position-relative overflow-hidden h-100 shadow" style="background: linear-gradient(135deg, #00bbcc, #00d4e3);">
+                    <div class="position-relative z-1">
+                        <h6 class="text-white-50 small fw-bold">جاري العمل</h6>
+                        <h2 class="display-5 fw-bold mb-0">@inProgress</h2>
+                    </div>
+                    <i class="fa-solid fa-spinner position-absolute top-50 start-0 translate-middle-y opacity-25" style="font-size: 5rem; margin-left: -20px;"></i>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6" data-aos="zoom-in" data-aos-delay="400">
+                <div class="glass-card p-4 text-white position-relative overflow-hidden h-100 shadow" style="background: linear-gradient(135deg, #10b981, #34d399);">
+                    <div class="position-relative z-1">
+                        <h6 class="text-white-50 small fw-bold">طلبات مكتملة</h6>
+                        <h2 class="display-5 fw-bold mb-0">@completed</h2>
+                    </div>
+                    <i class="fa-solid fa-check-double position-absolute top-50 start-0 translate-middle-y opacity-25" style="font-size: 5rem; margin-left: -20px;"></i>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Requests Table Area -->
+    <div class="glass-card bg-white p-0 overflow-hidden shadow-sm" data-aos="fade-up">
+        <div class="card-header bg-transparent py-4 px-4 border-bottom d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <h5 class="fw-bold mb-0"><i class="fa-solid fa-clipboard-list text-primary me-2"></i> سجل الطلبات الحديثة</h5>
+            
+            <div class="btn-group rounded-pill overflow-hidden border">
+                <button class="btn btn-sm btn-light filter-btn active" data-filter="all">الكل</button>
+                <button class="btn btn-sm btn-light filter-btn" data-filter="Pending">قيد الانتظار</button>
+                <button class="btn btn-sm btn-light filter-btn" data-filter="InProgress">جاري الآن</button>
+                <button class="btn btn-sm btn-light filter-btn" data-filter="Completed">مكتمل</button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-3">العميل</th>
+                        <th class="py-3 d-none d-sm-table-cell">رقم الهاتف</th>
+                        <th class="py-3 d-none d-md-table-cell">نوع المشكلة</th>
+                        <th class="py-3">الحالة</th>
+                        <th class="py-3 d-none d-lg-table-cell">التاريخ</th>
+                        <th class="px-4 py-3 text-center">الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="requestsTableBody">
+                    @if (Model.Secsses==true && Model.Result.Any())
+                    {
+                        foreach (var item in Model.Result.OrderByDescending(x => x.CreatedAt))
+                        {
+                            <tr class="request-row" data-status="@item.Status">
+                                <td class="px-4">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="avatar-sm bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+                                            <i class="fa-solid fa-user small"></i>
+                                        </div>
+                                        <div>
+                                            <p class="mb-0 fw-bold small">@item.ClientName</p>
+                                            <p class="mb-0 text-muted tiny" style="font-size: 0.7rem;">#@item.Id</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-3 d-none d-sm-table-cell"><span class="badge bg-light text-dark border fw-normal py-2 px-3 rounded-pill" dir="ltr">@item.Phone</span></td>
+                                <td class="py-3 d-none d-md-table-cell"><span class="fw-semibold small">@item.ProplemType</span></td>
+                                <td>
+                                    @if (item.Status == "Pending")
+                                    {
+                                        <span class="badge bg-warning bg-opacity-10 text-warning px-3 py-2 rounded-pill fw-bold border border-warning border-opacity-25">قيد الانتظار</span>
+                                    }
+                                    else if (item.Status == "InProgress")
+                                    {
+                                        <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold border border-primary border-opacity-25">جاري المعالجة</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill fw-bold border border-success border-opacity-25">مكتمل</span>
+                                    }
+                                </td>
+                                <td class="text-muted small py-3 d-none d-lg-table-cell">@item.CreatedAt.ToString("dd MMM yyyy")</td>
+                                <td class="px-4">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a asp-action="Details" asp-controller="Admin" asp-route-id="@item.Id" class="btn btn-sm btn-primary rounded-pill px-3 shadow-none">
+                                            <i class="fa-solid fa-eye me-1"></i> عرض
+                                        </a>
+                                        <form asp-action="DeleteLeak" asp-controller="Admin" method="post" onsubmit="return confirm('هل أنت متأكد من الحذف؟')">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@item.Id" />
+                                            <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3 border-opacity-25 shadow-none">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-5">
+                                <div class="opacity-50">
+                                    <i class="fa-solid fa-inbox display-4 mb-3"></i>
+                                    <h5>لا توجد طلبات واردة حالياً</h5>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('.filter-btn').click(function() {
+                $('.filter-btn').removeClass('active btn-primary text-white').addClass('btn-light');
+                $(this).addClass('active btn-primary text-white').removeClass('btn-light');
+                
+                const filter = $(this).data('filter');
+                if (filter === 'all') {
+                    $('.request-row').fadeIn();
+                } else {
+                    $('.request-row').hide();
+                    $(`.request-row[data-status="${filter}"]`).fadeIn();
+                }
+            });
+        });
+    </script>
+}

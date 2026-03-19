@@ -1,0 +1,655 @@
+@using Profissonal.PPL.ModelVM
+@using Profissonal.PPL.Response
+@model Response<List<LeakRequestVM>>
+
+@{
+    ViewData["Title"] = "تتبع طلباتك";
+}
+
+<style>
+    /* ═══ PAGE ═══ */
+    .search-page {
+        min-height: 100vh;
+        padding: 140px 0 80px;
+        position: relative;
+        background: linear-gradient(160deg, #e8f6fd 0%, #f0faff 40%, #e0f4fb 100%);
+    }
+
+        .search-page::before {
+            content: '';
+            position: fixed;
+            top: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0,145,202,0.12) 0%, transparent 65%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .search-page::after {
+            content: '';
+            position: fixed;
+            bottom: -150px;
+            left: -150px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0,188,212,0.1) 0%, transparent 65%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+    /* ═══ SEARCH CARD ═══ */
+    .search-hero-card {
+        background: rgba(255,255,255,0.92);
+        backdrop-filter: blur(20px);
+        border-radius: 32px;
+        border: 1px solid rgba(0,145,202,0.15);
+        box-shadow: 0 20px 60px rgba(0,100,180,0.1);
+        padding: 48px 52px;
+        animation: fadeUpIn 0.7s cubic-bezier(0.22,1,0.36,1) both;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .search-hero-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #003580, #0091CA, #00BCD4, #0091CA, #003580);
+            background-size: 200% 100%;
+            animation: shimmerBar 3s linear infinite;
+        }
+
+    @@keyframes shimmerBar {
+        0% {
+            background-position: 0% center;
+        }
+
+        100% {
+            background-position: 200% center;
+        }
+    }
+
+    .search-icon-wrap {
+        width: 88px;
+        height: 88px;
+        background: linear-gradient(135deg, #003580, #0091CA);
+        border-radius: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+        font-size: 2rem;
+        color: white;
+        box-shadow: 0 16px 40px rgba(0,53,128,0.3);
+        animation: iconFloat 3s ease-in-out infinite;
+    }
+
+    @@keyframes iconFloat {
+        0%, 100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-6px);
+        }
+    }
+
+    .search-input {
+        background: rgba(0,145,202,0.04);
+        border: 2px solid rgba(0,145,202,0.15);
+        border-radius: 50px;
+        padding: 14px 28px;
+        font-family: 'Cairo', sans-serif;
+        font-size: 1.05rem;
+        color: #0d2137;
+        width: 100%;
+        outline: none;
+        transition: all 0.3s ease;
+    }
+
+        .search-input:focus {
+            border-color: #0091CA;
+            background: white;
+            box-shadow: 0 0 0 5px rgba(0,145,202,0.1);
+        }
+
+        .search-input::placeholder {
+            color: #b0bec5;
+        }
+
+    .btn-search {
+        background: linear-gradient(135deg, #003580, #0091CA);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 14px 32px;
+        font-family: 'Cairo', sans-serif;
+        font-weight: 800;
+        font-size: 1rem;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+        box-shadow: 0 8px 25px rgba(0,53,128,0.3);
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+    }
+
+        .btn-search::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.5s;
+        }
+
+        .btn-search:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 14px 35px rgba(0,53,128,0.4);
+            color: white;
+        }
+
+            .btn-search:hover::after {
+                left: 150%;
+            }
+
+    /* ═══ RESULTS HEADER ═══ */
+    .results-header {
+        background: linear-gradient(135deg, #003580 0%, #0055a5 40%, #0091CA 100%);
+        border-radius: 24px;
+        padding: 24px 32px;
+        margin-bottom: 28px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        animation: fadeUpIn 0.5s cubic-bezier(0.22,1,0.36,1) both;
+        box-shadow: 0 12px 40px rgba(0,53,128,0.2);
+    }
+
+    .results-header-icon {
+        width: 52px;
+        height: 52px;
+        background: rgba(255,255,255,0.15);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        color: white;
+        flex-shrink: 0;
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .results-header h5 {
+        font-family: 'Cairo', sans-serif;
+        font-weight: 900;
+        color: white;
+        margin: 0 0 4px;
+        font-size: 1.1rem;
+    }
+
+    .results-header p {
+        color: rgba(255,255,255,0.7);
+        margin: 0;
+        font-size: 0.88rem;
+    }
+
+    .count-badge {
+        margin-right: auto;
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.25);
+        border-radius: 50px;
+        padding: 6px 18px;
+        color: white;
+        font-weight: 800;
+        font-size: 1rem;
+        backdrop-filter: blur(10px);
+        white-space: nowrap;
+    }
+
+    /* ═══ REQUEST CARD ═══ */
+    .req-card {
+        background: rgba(255,255,255,0.92);
+        backdrop-filter: blur(16px);
+        border-radius: 24px;
+        border: 1px solid rgba(0,145,202,0.12);
+        box-shadow: 0 8px 30px rgba(0,100,180,0.08);
+        padding: 28px;
+        height: 100%;
+        transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+        animation: fadeUpIn 0.6s cubic-bezier(0.22,1,0.36,1) both;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .req-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #003580, #0091CA, #00BCD4);
+            border-radius: 0 24px 24px 0;
+        }
+
+        .req-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0,100,180,0.15);
+            border-color: rgba(0,145,202,0.3);
+        }
+
+    .req-id-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: linear-gradient(135deg, rgba(0,53,128,0.08), rgba(0,145,202,0.1));
+        border: 1px solid rgba(0,145,202,0.2);
+        border-radius: 50px;
+        padding: 5px 14px;
+        font-family: 'Cairo', sans-serif;
+        font-weight: 900;
+        font-size: 0.88rem;
+        color: #003580;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 50px;
+        padding: 6px 14px;
+        font-weight: 800;
+        font-size: 0.82rem;
+    }
+
+        .status-badge.pending {
+            background: rgba(251,191,36,0.12);
+            color: #d97706;
+            border: 1px solid rgba(251,191,36,0.3);
+        }
+
+        .status-badge.inprogress {
+            background: rgba(0,145,202,0.1);
+            color: #0055a5;
+            border: 1px solid rgba(0,145,202,0.25);
+        }
+
+        .status-badge.done {
+            background: rgba(16,185,129,0.1);
+            color: #059669;
+            border: 1px solid rgba(16,185,129,0.25);
+        }
+
+    .req-problem {
+        font-family: 'Cairo', sans-serif;
+        font-weight: 800;
+        font-size: 1.1rem;
+        color: #0d2137;
+        margin: 16px 0 6px;
+    }
+
+    .req-address {
+        color: #78909c;
+        font-size: 0.88rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 20px;
+    }
+
+    .req-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 16px;
+        border-top: 1px solid rgba(0,145,202,0.1);
+    }
+
+    .req-date {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #90a4ae;
+        font-size: 0.82rem;
+        font-weight: 600;
+    }
+
+    .btn-details {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(135deg, #003580, #0091CA);
+        color: white !important;
+        text-decoration: none;
+        padding: 8px 20px;
+        border-radius: 50px;
+        font-weight: 800;
+        font-size: 0.85rem;
+        transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+        box-shadow: 0 6px 16px rgba(0,53,128,0.25);
+    }
+
+        .btn-details:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 10px 24px rgba(0,53,128,0.35);
+            color: white !important;
+        }
+
+    /* ═══ EMPTY / ERROR STATES ═══ */
+    .state-card {
+        background: rgba(255,255,255,0.92);
+        backdrop-filter: blur(20px);
+        border-radius: 28px;
+        border: 1px solid rgba(0,145,202,0.12);
+        box-shadow: 0 8px 40px rgba(0,100,180,0.08);
+        padding: 56px 40px;
+        text-align: center;
+        animation: fadeUpIn 0.6s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    .state-icon-wrap {
+        width: 96px;
+        height: 96px;
+        border-radius: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 28px;
+        font-size: 2.5rem;
+    }
+
+        .state-icon-wrap.warning {
+            background: rgba(251,191,36,0.12);
+            color: #d97706;
+            border: 1px solid rgba(251,191,36,0.2);
+        }
+
+        .state-icon-wrap.info {
+            background: rgba(0,145,202,0.08);
+            color: #0091CA;
+            border: 1px solid rgba(0,145,202,0.15);
+        }
+
+    .state-card h4 {
+        font-family: 'Cairo', sans-serif;
+        font-weight: 900;
+        color: #0d2137;
+        margin-bottom: 10px;
+    }
+
+    .state-card p {
+        color: #78909c;
+        margin-bottom: 0;
+        line-height: 1.7;
+    }
+
+    .btn-new-request {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: linear-gradient(135deg, #003580, #0091CA);
+        color: white !important;
+        text-decoration: none;
+        padding: 12px 28px;
+        border-radius: 50px;
+        font-weight: 800;
+        font-size: 0.95rem;
+        margin-top: 24px;
+        transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+        box-shadow: 0 8px 24px rgba(0,53,128,0.25);
+    }
+
+        .btn-new-request:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 14px 35px rgba(0,53,128,0.35);
+            color: white !important;
+        }
+
+    /* ═══ NULL STATE ═══ */
+    .null-state {
+        text-align: center;
+        padding: 60px 20px;
+        animation: fadeUpIn 0.7s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    .null-state-icon {
+        width: 120px;
+        height: 120px;
+        background: rgba(255,255,255,0.7);
+        border: 2px dashed rgba(0,145,202,0.25);
+        border-radius: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 28px;
+        font-size: 3rem;
+        color: rgba(0,145,202,0.3);
+    }
+
+    .null-state h4 {
+        font-family: 'Cairo', sans-serif;
+        font-weight: 800;
+        color: #546e7a;
+        margin-bottom: 8px;
+    }
+
+    .null-state p {
+        color: #90a4ae;
+        font-size: 0.95rem;
+    }
+
+    /* ═══ ANIMATIONS ═══ */
+    @@keyframes fadeUpIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .delay-1 {
+        animation-delay: 0.1s;
+    }
+
+    .delay-2 {
+        animation-delay: 0.2s;
+    }
+
+    .delay-3 {
+        animation-delay: 0.3s;
+    }
+
+    .delay-4 {
+        animation-delay: 0.4s;
+    }
+
+    @@media (max-width: 767px) {
+        .search-hero-card {
+            padding: 32px 24px;
+        }
+
+        .results-header {
+            flex-wrap: wrap;
+        }
+
+        .count-badge {
+            margin-right: 0;
+        }
+    }
+</style>
+
+<div class="search-page">
+    <div class="container" style="max-width: 900px; position: relative; z-index: 1;">
+
+        <!-- ① SEARCH CARD -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8">
+                <div class="search-hero-card">
+                    <div class="search-icon-wrap">
+                        <i class="fa-solid fa-magnifying-glass-location"></i>
+                    </div>
+                    <div class="text-center mb-4">
+                        <h3 style="font-family:'Cairo',sans-serif; font-weight:900; color:#0d2137; margin-bottom:8px;">
+                            تتبع حالة طلبك
+                        </h3>
+                        <p style="color:#78909c; font-size:0.95rem; line-height:1.8; max-width:420px; margin:0 auto;">
+                            أدخل رقم التليفون المستخدم في الطلب لعرض جميع طلباتك وحالتها الحالية.
+                        </p>
+                    </div>
+
+                    <form asp-action="GetByPhone" asp-controller="Home" method="get">
+                        <div class="row g-2">
+                            <div class="col-md-8">
+                                <input type="text" name="phone" id="phone"
+                                       class="search-input"
+                                       placeholder="01xxxxxxxxx" required
+                                       dir="ltr" />
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn-search">
+                                    <i class="fa-solid fa-search me-2"></i> بحث
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ② RESULTS -->
+        @if (Model != null)
+        {
+            @if (Model.Secsses.HasValue && Model.Secsses.Value == false)
+            {
+                <!-- ERROR STATE -->
+                <div class="row justify-content-center">
+                    <div class="col-lg-7">
+                        <div class="state-card">
+                            <div class="state-icon-wrap warning">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                            </div>
+                            <h4>@Model.MessageError</h4>
+                            <p>يرجى التأكد من كتابة رقم الهاتف بشكل صحيح أو إرسال طلب فحص جديد.</p>
+                            <a href="/#contact" class="btn-new-request">
+                                <i class="fa-solid fa-plus"></i>
+                                إرسال طلب فحص جديد
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (Model.Secsses.HasValue && Model.Secsses.Value == true && Model.Result != null && Model.Result.Any())
+            {
+                <!-- RESULTS -->
+                <div class="results-header">
+                    <div class="results-header-icon">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+                    <div>
+                        <h5>طلباتك المسجلة</h5>
+                        <p>مرتبة من الأحدث للأقدم</p>
+                    </div>
+                    <div class="count-badge">
+                        @Model.Result.Count طلب
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    @{
+                        int idx = 0;
+                    }
+                    @foreach (var item in Model.Result.OrderByDescending(x => x.CreatedAt))
+                    {
+                        var delayClass = $"delay-{(idx % 4) + 1}";
+                        var stClass = item.Status == "Pending" ? "pending" :
+                        item.Status == "InProgress" ? "inprogress" : "done";
+                        var stLabel = item.Status == "Pending" ? "قيد الانتظار" :
+                        item.Status == "InProgress" ? "جاري العمل" : "مكتمل";
+                        var stIcon = item.Status == "Pending" ? "fa-clock" :
+                        item.Status == "InProgress" ? "fa-spinner fa-spin" : "fa-circle-check";
+
+                        <div class="col-md-6 @delayClass">
+                            <div class="req-card">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="req-id-badge">
+                                        <i class="fa-solid fa-hashtag" style="font-size:0.75rem;"></i>
+                                        @item.Id
+                                    </div>
+                                    <div class="status-badge @stClass">
+                                        <i class="fa-solid @stIcon"></i>
+                                        @stLabel
+                                    </div>
+                                </div>
+
+                                <div class="req-problem">@item.ProplemType</div>
+                                <div class="req-address">
+                                    <i class="fa-solid fa-location-dot" style="color:#0091CA;"></i>
+                                    @item.Address
+                                </div>
+
+                                <div class="req-footer">
+                                    <div class="req-date">
+                                        <i class="fa-regular fa-calendar"></i>
+                                        @item.CreatedAt.ToString("dd/MM/yyyy")
+                                    </div>
+                                    <a asp-action="GetLeakbyId" asp-route-id="@item.Id" class="btn-details">
+                                        التفاصيل
+                                        <i class="fa-solid fa-chevron-left" style="font-size:0.75rem;"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        idx++;
+                    }
+                </div>
+            }
+            else
+            {
+                <!-- EMPTY STATE -->
+                <div class="row justify-content-center">
+                    <div class="col-lg-7">
+                        <div class="state-card">
+                            <div class="state-icon-wrap info">
+                                <i class="fa-solid fa-inbox"></i>
+                            </div>
+                            <h4>لا توجد طلبات</h4>
+                            <p>لم يتم العثور على أي طلبات مرتبطة بهذا الرقم.</p>
+                            <a href="/#contact" class="btn-new-request">
+                                <i class="fa-solid fa-plus"></i>
+                                إرسال طلب فحص جديد
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <!-- NULL STATE (أول دخول) -->
+            <div class="null-state">
+                <div class="null-state-icon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <h4>ابحث عن طلبك</h4>
+                <p>أدخل رقم هاتفك في الأعلى لعرض جميع طلباتك</p>
+            </div>
+        }
+
+    </div>
+</div>
