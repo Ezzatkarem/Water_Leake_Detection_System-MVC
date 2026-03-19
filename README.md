@@ -83,65 +83,25 @@ professional water leak detection company in Egypt.
 - **IIS Express** for local hosting
 
 ## 📁 Project Structure
-Water-Leak-Detection/
+## 📁 Project Structure
+
+├── Professonal.DAL
+│   ├── Models
+│   ├── Data (AppDbContext)
+│   ├── Repositories
+│   └── UnitOfWork
 │
-├── Professonal.DAL/ # Data Access Layer
-│ ├── Models/ # Entity Models
-│ │ ├── Account.cs
-│ │ ├── Comment.cs
-│ │ ├── LeakRequest.cs
-│ │ ├── MediaItem.cs
-│ │ ├── Vedio.cs
-│ │ └── ...
-│ ├── Data/ # DbContext
-│ │ └── AppDbContext.cs
-│ ├── Repositories/ # Generic Repository
-│ │ ├── IGenericRepository.cs
-│ │ └── GenericRepository.cs
-│ └── UnitOfWork/ # Unit of Work
-│ ├── IUnitOfWork.cs
-│ └── UnitOfWork.cs
+├── Profissonal.PPL (BLL)
+│   ├── ViewModels
+│   ├── Response
+│   └── Services
 │
-├── Profissonal.PPL/ # Business Logic Layer
-│ ├── ViewModels/ # View Models
-│ │ ├── LeakRequestVM.cs
-│ │ ├── CommentVM.cs
-│ │ ├── VedioVM.cs
-│ │ └── MediaItemVM.cs
-│ ├── Response/ # Response Models
-│ │ └── Response.cs
-│ └── Services/ # Business Services
-│ ├── Abstract/
-│ │ ├── ILeakRequestService.cs
-│ │ ├── ICommentService.cs
-│ │ ├── IVedioService.cs
-│ │ └── IMediaItemService.cs
-│ └── Implement/
-│ ├── LeakRequestService.cs
-│ ├── CommentService.cs
-│ ├── VedioService.cs
-│ └── MediaItemService.cs
-│
-└── Profetional.pl/ # Presentation Layer
-├── Controllers/ # MVC Controllers
-│ ├── HomeController.cs
-│ ├── AccountController.cs
-│ ├── AdminController.cs
-│ └── ...
-├── Views/ # Razor Views
-│ ├── Home/
-│ ├── Account/
-│ ├── Admin/
-│ └── Shared/
-├── Services/ # Account Service
-│ └── AccountService.cs
-├── wwwroot/ # Static Files
-│ ├── css/
-│ ├── js/
-│ ├── lib/
-│ └── images/
-├── appsettings.json # Configuration
-└── Program.cs # Entry Point
+└── Profetional.pl (PL)
+    ├── Controllers
+    ├── Views
+    ├── Services (AccountService)
+    └── wwwroot
+
 🔐 Security Features
 Feature	Implementation
 🔑 Authentication	ASP.NET Core Identity with cookie authentication
