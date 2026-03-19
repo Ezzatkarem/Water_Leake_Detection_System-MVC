@@ -95,19 +95,14 @@ dotnet run
 - Account lockout after failed attempts
 
 ## 📸 Screenshots
-Coming soon...
+
+<img width="1897" height="909" alt="image" src="https://github.com/user-attachments/assets/3d922ace-80f2-4f00-a79d-d39775eb2130" />
 
 ## 👨‍💻 Author
-Your Name
-GitHub: @yourusername
+Ezzat Karem
+GitHub: EzzatKarem
 
-## 📄 License
-This project is licensed under the MIT License
+
 ```
 
----
-
-غير بس:
-- `yourusername` باسمك على GitHub
-- `Your Name` باسمك
-- ضيف Screenshots لما تخلص 🎯
+🎯
