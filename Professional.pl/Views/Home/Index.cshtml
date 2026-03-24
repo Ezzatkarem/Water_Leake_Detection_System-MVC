@@ -298,7 +298,7 @@
 
                             @* Title تحت الصورة *@
                             <div style="padding:12px 14px; text-align:center;">
-                                <p style="font-family:'Cairo',sans-serif; font-weight:700; font-size:.9rem; color:#1a2a3a; margin:0; line-height:1.4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                                <p style="font-family:'Cairo',sans-serif; font-weight:700; font-size:.9rem; color:#1a2a3a; margin:0; line-height:1.4;">
                                     @photo.Title
                                 </p>
                                 @if (photo.CreatedAt != default)
@@ -522,10 +522,11 @@
                             <div class="input-group-v2">
                                 <select asp-for="ProplemType" class="input-v2" required>
                                     <option value="" disabled selected>-- يرجى اختيار نوع المشكلة --</option>
-                                    <option value="Wall">تسريب حائط</option>
+                                    <option value="Wall">رطوبه في الحوائط</option>
                                     <option value="Ceiling">تسريب سقف</option>
-                                    <option value="Tank">تسريب خزان</option>
-                                    <option value="Roof">عزل سطح</option>
+                                    <option value="Tank">تسريب في حمام</option>
+                                    <option value="Roof"> تسريب في مطبخ</option>
+                                    <option value="Roof">تسريب في خط عمومي</option>
                                     <option value="Other">أخرى</option>
                                 </select>
                                 <i class="fa-solid fa-tools input-icon-v2"></i>

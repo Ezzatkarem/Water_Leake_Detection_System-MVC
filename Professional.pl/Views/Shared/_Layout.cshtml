@@ -107,10 +107,10 @@
                                 <a class="nav-link @(Context.Request.Path == "/" ? "active" : "")" asp-controller="Home" asp-action="Index">الرئيسية</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#services">خدماتنا</a>
+                                <a class="nav-link" href="/#services">خدماتنا</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#contact">اتصل بنا</a>
+                                <a class="nav-link" href="/#contact">اتصل بنا</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Admin" asp-action="Index">الإدارة</a>
@@ -158,23 +158,29 @@
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link @(Context.Request.Path == "/" ? "active" : "")"
-                           asp-controller="Home" asp-action="Index"
-                           data-bs-dismiss="offcanvas">
+                           href="javascript:void(0)"
+                           onclick="goToSection('/')">
                             الرئيسية
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#services" data-bs-dismiss="offcanvas">خدماتنا</a>
+                        <a class="nav-link" href="javascript:void(0)"
+                           onclick="goToSection('/#services')"
+                           data-bs-dismiss="offcanvas">خدماتنا</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#gallery" data-bs-dismiss="offcanvas">معرض الأعمال</a>
+                        <a class="nav-link" href="javascript:void(0)"
+                           onclick="goToSection('/#gallery')"
+                           data-bs-dismiss="offcanvas">معرض الأعمال</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#contact" data-bs-dismiss="offcanvas">اتصل بنا</a>
+                        <a class="nav-link" href="javascript:void(0)"
+                           onclick="goToSection('/#contact')"
+                           data-bs-dismiss="offcanvas">اتصل بنا</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Admin" asp-action="Index"
-                           data-bs-dismiss="offcanvas">
+                        <a class="nav-link" href="javascript:void(0)"
+                           onclick="goToSection('/Admin')">
                             الإدارة
                         </a>
                     </li>
@@ -184,7 +190,6 @@
                 <div class="offcanvas-social">
                     <a href="#" class="offcanvas-soc-icon"><i class="fa-brands fa-facebook-f"></i></a>
                     <a href="#" class="offcanvas-soc-icon"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" class="offcanvas-soc-icon"><i class="fa-brands fa-x-twitter"></i></a>
                     <a href="#" class="offcanvas-soc-icon"><i class="fa-brands fa-whatsapp"></i></a>
                 </div>
 
@@ -218,15 +223,26 @@
                     <!-- COL 1: Brand -->
                     <div class="col-lg-4 footer-col reveal-footer">
                         <div class="footer-brand mb-4" dir="ltr">
-                            <div class="d-flex align-items-center gap-3 mb-3">
-                                <div class="footer-logo-icon">
-                                    <i class="fa-solid fa-droplet text-white fs-4"></i>
-                                </div>
-                                <div>
-                                    <div class="footer-logo-pr">PR</div>
-                                    <div class="footer-logo-sub">professionals</div>
-                                </div>
+                            <div class="d-flex align-items-center gap-1 mb-2">
+                                <span class="footer-logo-pr">PR</span>
+                                <svg viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg" style="width:42px; height:56px;">
+                                    <defs>
+                                        <linearGradient id="footDropGrad" x1="30%" y1="10%" x2="70%" y2="90%">
+                                            <stop offset="0%" stop-color="#29a8e0" />
+                                            <stop offset="100%" stop-color="#1565c0" />
+                                        </linearGradient>
+                                    </defs>
+                                    <path d="M30,4 C30,4 6,36 6,52 C6,66 17,76 30,76 C43,76 54,66 54,52 C54,36 30,4 30,4 Z"
+                                          fill="url(#footDropGrad)" />
+                                    <ellipse cx="21" cy="38" rx="6" ry="9" fill="rgba(255,255,255,0.45)" transform="rotate(-20 21 38)" />
+                                </svg>
                             </div>
+                            <div class="footer-logo-sub" style="font-size:1rem; color:rgba(255,255,255,0.7); margin-bottom:4px;">professionals</div>
+                            <div style="font-family:'Cairo',sans-serif; font-size:0.85rem; color:rgba(255,255,255,0.6); font-weight:700;">محترفون كشف تسريبات المياه</div>
+                            <svg viewBox="0 0 200 22" xmlns="http://www.w3.org/2000/svg" style="width:200px; margin-top:6px;">
+                                <path d="M0,8 C35,2 75,16 115,8 C155,2 195,16 200,8" fill="none" stroke="#29a8e0" stroke-width="2.5" stroke-linecap="round" />
+                                <path d="M0,16 C35,10 75,22 115,16 C155,10 195,22 200,16" fill="none" stroke="#1565c0" stroke-width="2" stroke-linecap="round" opacity="0.7" />
+                            </svg>
                         </div>
                         <p class="footer-desc">
                             شركة متخصصة في كشف تسربات المياه بأحدث الأجهزة الإلكترونية العالمية وبدون تكسير. خبرة تمتد لأكثر من 10 سنوات في خدمة عملائنا في جميع أنحاء مصر.
@@ -234,7 +250,7 @@
                         <!-- Cert badges -->
                         <div class="d-flex flex-wrap gap-2 mb-4">
                             <span class="footer-badge"><i class="fa-solid fa-certificate me-1"></i> ISO معتمد</span>
-                            <span class="footer-badge"><i class="fa-solid fa-shield-check me-1"></i> ضمان 10 سنوات</span>
+                            <span class="footer-badge"><i class="fa-solid fa-shield-check me-1"></i> ضمان 6 اشهر  </span>
                             <span class="footer-badge"><i class="fa-solid fa-headset me-1"></i> 24/7</span>
                         </div>
                         <!-- Social -->

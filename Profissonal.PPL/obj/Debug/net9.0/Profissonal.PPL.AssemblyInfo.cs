@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Profissonal.PPL")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7bc618b55008d17aebb8de70a528bb852a792658")]
 [assembly: System.Reflection.AssemblyProductAttribute("Profissonal.PPL")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Profissonal.PPL")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

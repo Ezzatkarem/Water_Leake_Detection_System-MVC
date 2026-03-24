@@ -28,3 +28,4 @@ D:\My Projects\.net\Professional\Profissonal.PPL\obj\Debug\net9.0\Profissonal.PP
 D:\My Projects\.net\Professional\Profissonal.PPL\obj\Debug\net9.0\refint\Profissonal.PPL.dll
 D:\My Projects\.net\Professional\Profissonal.PPL\obj\Debug\net9.0\Profissonal.PPL.pdb
 D:\My Projects\.net\Professional\Profissonal.PPL\obj\Debug\net9.0\ref\Profissonal.PPL.dll
+D:\My Projects\.net\Professional\Profissonal.PPL\obj\Debug\net9.0\Profissonal.PPL.sourcelink.json
